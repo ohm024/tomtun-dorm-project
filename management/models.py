@@ -17,3 +17,17 @@ class Room(models.Model):
 
     def __str__(self):
         return f"ห้อง {self.room_number}"
+class Tenant(models.Model):
+    first_name = models.CharField(max_length=100, verbose_name="ชื่อ")
+    last_name = models.CharField(max_length=100, verbose_name="นามสกุล")
+    phone = models.CharField(max_length=15, verbose_name="เบอร์โทรศัพท์")
+    
+    # เชื่อมผู้เช่าเข้ากับห้องพัก (1 ห้อง มีผู้เช่าหลัก 1 คน)
+    # on_delete=models.SET_NULL หมายถึง ถ้าห้องถูกลบ ข้อมูลผู้เช่ายังอยู่แต่ค่าห้องจะเป็น Null (ว่างเปล่า)
+    room = models.OneToOneField(Room, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="ห้องพักที่เช่า")
+    
+    move_in_date = models.DateField(verbose_name="วันที่ย้ายเข้า")
+    is_active = models.BooleanField(default=True, verbose_name="ยังพักอยู่หรือไม่")
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name} (ห้อง {self.room.room_number if self.room else 'ยังไม่มีห้อง'})"
