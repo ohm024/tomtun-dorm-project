@@ -12,6 +12,7 @@ urlpatterns = [
     path('rooms/edit/<int:room_id>/', views.edit_room, name='edit_room'),
     path('rooms/delete/<int:room_id>/', views.delete_room, name='delete_room'),
     path('contracts/', views.contracts, name='contracts'), # หน้าการจองและสัญญา
+    path('contracts/edit/<int:contract_id>/', views.edit_contract, name='edit_contract'),
     path('check-in-out/', views.check_in_out, name='check_in_out'), # หน้าเช็คอิน/เช็คเอาท์
     path('tenants/', views.tenants, name='tenants'),       # หน้าจัดการผู้เช่า
     

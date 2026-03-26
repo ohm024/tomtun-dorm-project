@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="mb-6">
+    <a href="{% url 'contracts' %}" class="text-teal-600 hover:text-teal-700 text-sm mb-2 inline-block font-medium">
+        <i class="fas fa-arrow-left mr-1"></i> กลับไปหน้ารายการสัญญา
+    </a>
+    <h2 class="text-2xl font-bold text-gray-800">แก้ไขสัญญา: {{ contract.contract_number }}</h2>
+</div>
+
+<div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm max-w-2xl">
+    <form method="POST" class="space-y-6">
+        {% csrf_token %}
+        <div class="grid grid-cols-1 gap-6">
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">ชื่อผู้เช่า/ผู้จอง</label>
+                <input type="text" name="tenant_name" value="{{ contract.tenant_name }}" class="w-full text-sm border-gray-300 rounded-lg px-4 py-2.5 border bg-gray-50">
+            </div>
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">เงินมัดจำ (บาท)</label>
+                <input type="number" name="deposit" value="{{ contract.deposit }}" class="w-full text-sm border-gray-300 rounded-lg px-4 py-2.5 border bg-gray-50">
+            </div>
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">สถานะสัญญา</label>
+                <select name="status" class="w-full text-sm border-gray-300 rounded-lg px-4 py-2.5 border bg-white">
+                    <option value="active" {% if contract.status == 'active' %}selected{% endif %}>กำลังเช่า (Active)</option>
+                    <option value="pending" {% if contract.status == 'pending' %}selected{% endif %}>รอเซ็นสัญญา</option>
+                    <option value="expiring" {% if contract.status == 'expiring' %}selected{% endif %}>ใกล้หมดอายุ</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">หมายเหตุ</label>
+                <textarea name="notes" class="w-full text-sm border-gray-300 rounded-lg px-4 py-2.5 border bg-gray-50" rows="3">{{ contract.notes }}</textarea>
+            </div>
+        </div>
+        <div class="pt-4 flex justify-end space-x-3">
+            <button type="submit" class="bg-teal-600 hover:bg-teal-700 text-white px-6 py-2.5 rounded-lg font-bold transition-colors shadow-sm text-sm">บันทึกการแก้ไข</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

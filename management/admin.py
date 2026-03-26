@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Room,Tenant,Invoice,MaintenanceRequest
+from .models import Room,Tenant,Invoice,MaintenanceRequest,Contract
 
 # ปรับแต่งหน้าตาของตาราง Room ในหน้า Admin
 @admin.register(Room)
@@ -30,3 +30,9 @@ class MaintenanceRequestAdmin(admin.ModelAdmin):
     list_display = ('room', 'title', 'status', 'created_at')
     list_filter = ('status',)
     search_fields = ('room__room_number', 'title')
+
+@admin.register(Contract)
+class ContractAdmin(admin.ModelAdmin):
+    list_display = ('contract_number', 'contract_type', 'room', 'tenant_name', 'start_date', 'status')
+    list_filter = ('contract_type', 'status', 'start_date')
+    search_fields = ('contract_number', 'tenant_name', 'room__room_number')
