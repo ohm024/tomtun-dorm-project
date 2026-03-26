@@ -4,6 +4,6 @@ venv/
 # Database
 db.sqlite3
 
-# Python cache files
-__pycache__/
+**/__pycache__/
 *.pyc
+.DS_Store
