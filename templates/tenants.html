@@ -1,90 +1,81 @@
 {% extends 'base.html' %}
-
 {% block content %}
-<div class="mb-8 flex justify-between items-center">
+<div class="flex justify-between items-center mb-6">
     <div>
         <h2 class="text-2xl font-bold text-gray-800">จัดการผู้เช่า</h2>
         <p class="text-gray-500 text-sm mt-1">รายชื่อผู้เช่าปัจจุบัน ข้อมูลติดต่อ และประวัติการพักอาศัย</p>
     </div>
-    <a href="{% url 'add_tenant' %}" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center shadow-sm">
-    <i class="fas fa-user-plus mr-2"></i> เพิ่มผู้เช่าใหม่
-</a>
-    </button>
+    <a href="{% url 'add_tenant' %}" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg font-medium text-sm flex items-center shadow-sm">
+        <i class="fas fa-user-plus mr-2"></i> เพิ่มผู้เช่าใหม่
+    </a>
 </div>
 
-<div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-    
-    <div class="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
-        <div class="relative">
-            <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-            <input type="text" placeholder="ค้นหาชื่อ, เบอร์โทรศัพท์..." class="pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-teal-500 w-72">
+<div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+    <form method="GET" class="p-4 border-b border-gray-100 bg-gray-50/50 flex flex-wrap gap-4 justify-between items-center">
+        <div class="relative w-full md:w-64">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <i class="fas fa-search text-gray-400"></i>
+            </div>
+            <input type="text" name="search" value="{{ search_query }}" class="w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:border-teal-500 focus:outline-none" placeholder="ค้นหาชื่อ, เบอร์โทรศัพท์...">
         </div>
-        <div class="flex space-x-2 text-sm">
-            <span class="text-gray-400 self-center mr-2">สถานะ:</span>
-            <select class="border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-teal-500 text-gray-600">
-                <option>ทั้งหมด</option>
-                <option>พักอาศัยอยู่</option>
-                <option>ย้ายออกแล้ว</option>
+        
+        <div class="flex items-center gap-2">
+            <span class="text-sm text-gray-500">สถานะ:</span>
+            <select name="status" onchange="this.form.submit()" class="border border-gray-200 rounded-lg text-sm px-3 py-2 focus:outline-none">
+                <option value="" {% if status_filter == "" %}selected{% endif %}>ทั้งหมด</option>
+                <option value="active" {% if status_filter == "active" %}selected{% endif %}>พักอาศัยอยู่</option>
+                <option value="inactive" {% if status_filter == "inactive" %}selected{% endif %}>ย้ายออกแล้ว</option>
             </select>
         </div>
-    </div>
+    </form>
 
     <div class="overflow-x-auto">
-        <table class="w-full text-left border-collapse">
-            <thead>
-                <tr class="bg-white border-b border-gray-100 text-xs text-gray-400 uppercase tracking-wider">
-                    <th class="p-4 font-semibold">ชื่อ-นามสกุล</th>
-                    <th class="p-4 font-semibold text-center">ห้องพัก</th>
-                    <th class="p-4 font-semibold">เบอร์โทรศัพท์</th>
-                    <th class="p-4 font-semibold">อีเมล / LINE ID</th>
-                    <th class="p-4 font-semibold">สถานะ</th>
-                    <th class="p-4 font-semibold text-right">จัดการ</th>
+        <table class="w-full text-left text-sm text-gray-600">
+            <thead class="bg-gray-50 text-gray-500 text-xs uppercase font-semibold">
+                <tr>
+                    <th class="px-6 py-4">ชื่อ-นามสกุล</th>
+                    <th class="px-6 py-4 text-center">ห้องพัก</th>
+                    <th class="px-6 py-4">เบอร์โทรศัพท์</th>
+                    <th class="px-6 py-4 text-center">สถานะ</th>
+                    <th class="px-6 py-4 text-right">จัดการ</th>
                 </tr>
             </thead>
-            <tbody class="text-sm text-gray-700">
-                <tr class="border-b border-gray-50 hover:bg-gray-50 transition-colors">
-                    <td class="p-4">
+            <tbody class="divide-y divide-gray-100">
+                {% for tenant in tenants %}
+                <tr class="hover:bg-gray-50 transition-colors">
+                    <td class="px-6 py-4">
                         <div class="flex items-center">
-                            <img src="https://ui-avatars.com/api/?name=สมชาย+ใจดี&background=0d9488&color=fff" class="w-9 h-9 rounded-full mr-3 shadow-sm">
+                            <div class="w-8 h-8 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center font-bold mr-3">
+                                {{ tenant.first_name|slice:":1" }}
+                            </div>
                             <div>
-                                <p class="font-bold text-gray-800">คุณสมชาย ใจดี</p>
-                                <p class="text-[10px] text-gray-400 uppercase tracking-tighter">ID: 1-1002-XXXXX-XX-X</p>
+                                <div class="font-bold text-gray-800">{{ tenant.first_name }} {{ tenant.last_name }}</div>
                             </div>
                         </div>
                     </td>
-                    <td class="p-4 text-center font-bold text-teal-600">101</td>
-                    <td class="p-4 text-gray-600">081-234-5678</td>
-                    <td class="p-4 text-gray-500 italic">somchai.j@email.com</td>
-                    <td class="p-4">
-                        <span class="bg-teal-50 text-teal-700 px-3 py-1 rounded-full text-[11px] font-bold">พักอาศัยอยู่</span>
+                    <td class="px-6 py-4 text-center font-bold text-teal-600">{{ tenant.room.room_number }}</td>
+                    <td class="px-6 py-4">{{ tenant.phone }}</td>
+                    <td class="px-6 py-4 text-center">
+                        {% if tenant.is_active %}
+                            <span class="bg-teal-50 text-teal-700 px-3 py-1 rounded-full text-[11px] font-bold">พักอาศัยอยู่</span>
+                        {% else %}
+                            <span class="bg-gray-100 text-gray-500 px-3 py-1 rounded-full text-[11px] font-bold">ย้ายออกแล้ว</span>
+                        {% endif %}
                     </td>
-                    <td class="p-4 text-right space-x-2">
-                        <button class="text-gray-400 hover:text-blue-500 transition-colors"><i class="fas fa-edit"></i></button>
-                        <button class="text-gray-400 hover:text-red-500 transition-colors"><i class="fas fa-trash"></i></button>
-                    </td>
-                </tr>
-                
-                <tr class="border-b border-gray-50 hover:bg-gray-50 transition-colors">
-                    <td class="p-4">
-                        <div class="flex items-center">
-                            <img src="https://ui-avatars.com/api/?name=สมศรี+มีสุข&background=6366f1&color=fff" class="w-9 h-9 rounded-full mr-3 shadow-sm">
-                            <div>
-                                <p class="font-bold text-gray-800">คุณสมศรี มีสุข</p>
-                                <p class="text-[10px] text-gray-400 uppercase tracking-tighter">ID: 3-5099-XXXXX-XX-X</p>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="p-4 text-center font-bold text-teal-600">102</td>
-                    <td class="p-4 text-gray-600">089-876-5432</td>
-                    <td class="p-4 text-gray-500 italic">somsri_happy</td>
-                    <td class="p-4">
-                        <span class="bg-teal-50 text-teal-700 px-3 py-1 rounded-full text-[11px] font-bold">พักอาศัยอยู่</span>
-                    </td>
-                    <td class="p-4 text-right space-x-2">
-                        <button class="text-gray-400 hover:text-blue-500 transition-colors"><i class="fas fa-edit"></i></button>
-                        <button class="text-gray-400 hover:text-red-500 transition-colors"><i class="fas fa-trash"></i></button>
+                    <td class="px-6 py-4 text-right space-x-2">
+                        <button class="text-gray-400 hover:text-blue-600"><i class="fas fa-edit"></i></button>
+                        <a href="{% url 'delete_tenant' tenant.id %}" 
+   onclick="return confirm('คุณแน่ใจหรือไม่ที่จะลบผู้เช่าคนนี้? ห้องพักจะกลับเป็นสถานะว่างทันที')"
+   class="text-gray-400 hover:text-red-600 transition-colors">
+    <i class="fas fa-trash"></i>
+</a>
                     </td>
                 </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="px-6 py-10 text-center text-gray-400">ไม่พบข้อมูลผู้เช่า</td>
+                </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>

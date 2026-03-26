@@ -148,7 +148,31 @@ def check_in_out(request):
     return render(request, 'check_in_out.html')
 
 def tenants(request):
-    return render(request, 'tenants.html')
+    search_query = request.GET.get('search', '')
+    status_filter = request.GET.get('status', '')
+    
+    # ดึงข้อมูลผู้เช่าทั้งหมด
+    all_tenants = Tenant.objects.all().order_by('-id')
+    
+    # ค้นหาด้วย ชื่อ หรือ เบอร์โทร
+    if search_query:
+        all_tenants = all_tenants.filter(
+            Q(first_name__icontains=search_query) | 
+            Q(last_name__icontains=search_query) | 
+            Q(phone__icontains=search_query)
+        )
+    
+    # กรองตามสถานะ (is_active)
+    if status_filter == 'active':
+        all_tenants = all_tenants.filter(is_active=True)
+    elif status_filter == 'inactive':
+        all_tenants = all_tenants.filter(is_active=False)
+
+    return render(request, 'tenants.html', {
+        'tenants': all_tenants,
+        'search_query': search_query,
+        'status_filter': status_filter
+    })
 
 # 👇 เพิ่มฟังก์ชันนี้สำหรับหน้า "บิลค่าเช่า" ครับ
 def billing(request):
@@ -160,7 +184,35 @@ def settings_view(request):
 def login_view(request):
     return render(request, 'login.html')
 def add_tenant(request):
-    return render(request, 'add_tenant.html')
+    if request.method == 'POST':
+        # 1. รับค่าจากฟอร์ม (ต้องตรงกับ attribute 'name' ใน html)
+        name = request.POST.get('full_name')
+        id_card = request.POST.get('id_card')
+        phone = request.POST.get('phone')
+        email_line = request.POST.get('email_line')
+        room_id = request.POST.get('room')
+        start_date = request.POST.get('start_date')
+
+        # 2. บันทึกข้อมูลผู้เช่า
+        room = Room.objects.get(id=room_id)
+        # แก้ไขตรงนี้: ใส่เฉพาะฟิลด์ที่ชัวร์ว่ามีใน Model
+        tenant = Tenant.objects.create(
+            first_name=name,
+            phone=phone,
+            room=room,
+            move_in_date=start_date, # จาก Error ก่อนหน้า ฟิลด์นี้ต้องมี
+            is_active=True
+        )
+        
+        # 3. อัปเดตสถานะห้องพัก
+        room.status = 'มีผู้เช่า' # หรือ 'occupied' ตามที่คุณตั้งค่าไว้
+        room.save()
+
+        return redirect('tenants') # บันทึกเสร็จให้กลับไปหน้าบันชีรายชื่อ
+
+    # ส่งรายชื่อห้องที่ "ว่าง" ไปให้เลือกใน Dropdown
+    available_rooms = Room.objects.exclude(status__icontains='มีผู้เช่า').exclude(status__icontains='occupied')
+    return render(request, 'add_tenant.html', {'rooms': available_rooms})
 def add_room(request):
     return render(request, 'add_room.html')
 def add_room(request):
@@ -262,6 +314,26 @@ def delete_room(request, room_id):
     room = Room.objects.get(id=room_id)
     room.delete()
     return redirect('rooms')
+
+from django.shortcuts import get_object_or_404, redirect
+from .models import Tenant
+
+def delete_tenant(request, pk):
+    # ดึงข้อมูลผู้เช่าตาม ID (Primary Key)
+    tenant = get_object_or_404(Tenant, pk=pk)
+    
+    # ดึงข้อมูลห้องพักของผู้เช่าคนนี้
+    room = tenant.room
+    
+    # ลบข้อมูลผู้เช่าออกจากฐานข้อมูล
+    tenant.delete()
+    
+    # เมื่อลบผู้เช่าแล้ว ให้อัปเดตสถานะห้องพักกลับเป็น "ว่าง"
+    if room:
+        room.status = 'ว่าง' # ตรวจสอบให้ตรงกับคำที่ใช้ในระบบของคุณ (เช่น 'ว่าง' หรือ 'Vacant')
+        room.save()
+        
+    return redirect('tenants') # ลบเสร็จแล้วให้กลับไปที่หน้าแสดงรายชื่อผู้เช่า
 
 def edit_contract(request, contract_id):
     # ดึงข้อมูลสัญญาเดิมมา
