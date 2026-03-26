@@ -20,5 +20,6 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('tenants/add/', views.add_tenant, name='add_tenant'),
     path('rooms/add/', views.add_room, name='add_room'), 
-    path('contracts/add/', views.add_contract, name='add_contract'),     
+    path('contracts/add/', views.add_contract, name='add_contract'),  
+    path('billing/add/', views.add_bill, name='add_bill'),   
 ]

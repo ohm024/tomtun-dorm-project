@@ -42,3 +42,5 @@ def add_room(request):
     return render(request, 'add_room.html')
 def add_contract(request):
     return render(request, 'add_contract.html')
+def add_bill(request):
+    return render(request, 'add_bill.html')
