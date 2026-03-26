@@ -36,3 +36,5 @@ def settings_view(request):
     return render(request, 'settings.html')
 def login_view(request):
     return render(request, 'login.html')
+def add_tenant(request):
+    return render(request, 'add_tenant.html')

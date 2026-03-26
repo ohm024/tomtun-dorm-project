@@ -17,5 +17,6 @@ urlpatterns = [
     path('billing/', views.billing, name='billing'),
     path('maintenance/', views.maintenance, name='maintenance'), 
     path('settings/', views.settings_view, name='settings'),
-    path('login/', views.login_view, name='login'),      
+    path('login/', views.login_view, name='login'),
+    path('tenants/add/', views.add_tenant, name='add_tenant'),      
 ]

@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="mb-6">
+    <a href="{% url 'tenants' %}" class="text-teal-600 hover:text-teal-700 text-sm mb-2 inline-block font-medium">
+        <i class="fas fa-arrow-left mr-1"></i> กลับไปหน้าจัดการผู้เช่า
+    </a>
+    <h2 class="text-2xl font-bold text-gray-800">เพิ่มผู้เช่าใหม่</h2>
+    <p class="text-gray-500 text-sm mt-1">กรอกข้อมูลรายละเอียดของผู้เช่าใหม่เพื่อบันทึกลงในระบบ</p>
+</div>
+
+<div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm max-w-3xl">
+    <form action="{% url 'tenants' %}" method="GET" class="space-y-6">
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="md:col-span-2 border-b border-gray-100 pb-2">
+                <h3 class="text-lg font-bold text-gray-800"><i class="fas fa-address-card text-teal-600 mr-2"></i>ข้อมูลส่วนตัว</h3>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">ชื่อ - นามสกุล <span class="text-red-500">*</span></label>
+                <input type="text" class="w-full text-sm border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 px-4 py-2.5 border bg-gray-50" placeholder="เช่น นายสมชาย ใจดี" required>
+            </div>
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">เลขประจำตัวประชาชน <span class="text-red-500">*</span></label>
+                <input type="text" class="w-full text-sm border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 px-4 py-2.5 border bg-gray-50" placeholder="1-xxxx-xxxxx-xx-x" required>
+            </div>
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">เบอร์โทรศัพท์ <span class="text-red-500">*</span></label>
+                <input type="tel" class="w-full text-sm border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 px-4 py-2.5 border bg-gray-50" placeholder="08x-xxx-xxxx" required>
+            </div>
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">อีเมล / LINE ID</label>
+                <input type="text" class="w-full text-sm border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 px-4 py-2.5 border bg-gray-50" placeholder="email@example.com / Line ID">
+            </div>
+
+            <div class="md:col-span-2 border-b border-gray-100 pb-2 mt-4">
+                <h3 class="text-lg font-bold text-gray-800"><i class="fas fa-key text-teal-600 mr-2"></i>ข้อมูลการเช่า</h3>
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">ห้องพัก <span class="text-red-500">*</span></label>
+                <select class="w-full text-sm border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 px-4 py-2.5 border bg-white" required>
+                    <option value="">-- เลือกห้องพักที่ว่าง --</option>
+                    <option value="103">ห้อง 103 (ว่าง)</option>
+                    <option value="104">ห้อง 104 (ว่าง)</option>
+                    <option value="201">ห้อง 201 (ว่าง)</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">วันที่เข้าพัก <span class="text-red-500">*</span></label>
+                <input type="date" class="w-full text-sm border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 px-4 py-2.5 border bg-gray-50" required>
+            </div>
+        </div>
+
+        <div class="pt-6 flex justify-end space-x-3 mt-8">
+            <a href="{% url 'tenants' %}" class="px-5 py-2.5 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-bold text-sm">
+                ยกเลิก
+            </a>
+            <button type="submit" class="bg-teal-600 hover:bg-teal-700 text-white px-6 py-2.5 rounded-lg font-bold transition-colors shadow-sm text-sm flex items-center">
+                <i class="fas fa-save mr-2"></i> บันทึกข้อมูล
+            </button>
+        </div>
+        
+    </form>
+</div>
+{% endblock %}
