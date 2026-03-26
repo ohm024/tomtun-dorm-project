@@ -10,7 +10,9 @@
 </div>
 
 <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm max-w-3xl">
-    <form action="{% url 'rooms' %}" method="GET" class="space-y-6">
+    <form action="" method="POST" class="space-y-6">
+        
+        {% csrf_token %}
         
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="md:col-span-2 border-b border-gray-100 pb-2">
@@ -19,12 +21,12 @@
             
             <div>
                 <label class="block text-sm font-bold text-gray-700 mb-1">เลขห้อง <span class="text-red-500">*</span></label>
-                <input type="text" class="w-full text-sm border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 px-4 py-2.5 border bg-gray-50" placeholder="เช่น 101, 102, 201" required>
+                <input type="text" name="room_number" class="w-full text-sm border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 px-4 py-2.5 border bg-gray-50" placeholder="เช่น 101, 102, 201" required>
             </div>
             
             <div>
                 <label class="block text-sm font-bold text-gray-700 mb-1">ประเภทห้องพัก <span class="text-red-500">*</span></label>
-                <select class="w-full text-sm border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 px-4 py-2.5 border bg-white" required>
+                <select name="room_type" class="w-full text-sm border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 px-4 py-2.5 border bg-white" required>
                     <option value="Standard">Standard (พัดลม)</option>
                     <option value="Deluxe">Deluxe (แอร์)</option>
                     <option value="Suite">Suite (ห้องใหญ่+แอร์)</option>
@@ -33,20 +35,22 @@
 
             <div>
                 <label class="block text-sm font-bold text-gray-700 mb-1">ราคาค่าเช่า (บาท/เดือน) <span class="text-red-500">*</span></label>
-                <input type="number" class="w-full text-sm border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 px-4 py-2.5 border bg-gray-50" placeholder="เช่น 4500" required>
+                <input type="number" name="price" class="w-full text-sm border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 px-4 py-2.5 border bg-gray-50" placeholder="เช่น 4500" required>
             </div>
 
             <div>
                 <label class="block text-sm font-bold text-gray-700 mb-1">สถานะเริ่มต้น <span class="text-red-500">*</span></label>
-                <select class="w-full text-sm border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 px-4 py-2.5 border bg-white" required>
-                    <option value="ว่าง">ว่าง</option>
-                    <option value="ซ่อมแซม">ซ่อมแซม</option>
+                <select name="status" class="w-full text-sm border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 px-4 py-2.5 border bg-white" required>
+                    <option value="available">ว่าง</option>
+                    <option value="occupied">มีผู้เช่า</option>
+                    <option value="booked">จองแล้ว</option>
+                    <option value="maintenance">ซ่อมแซม</option>
                 </select>
             </div>
 
             <div class="md:col-span-2">
                 <label class="block text-sm font-bold text-gray-700 mb-1">รายละเอียดเฟอร์นิเจอร์ / หมายเหตุ</label>
-                <textarea class="w-full text-sm border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 px-4 py-2.5 border bg-gray-50" rows="3" placeholder="เช่น มีเตียง 5 ฟุต, ตู้เสื้อผ้า, โต๊ะเครื่องแป้ง"></textarea>
+                <textarea name="note" class="w-full text-sm border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 px-4 py-2.5 border bg-gray-50" rows="3" placeholder="เช่น มีเตียง 5 ฟุต, ตู้เสื้อผ้า, โต๊ะเครื่องแป้ง"></textarea>
             </div>
         </div>
 

@@ -3,6 +3,8 @@ from django.db.models import Sum
 from .models import Room, Tenant, Invoice,MaintenanceRequest
 from django.db.models.functions import TruncMonth # 👈 ตัวจัดกลุ่มตามเดือน
 from datetime import datetime, timedelta       # 👈 ตัวคำนวณวันเวลา
+from django.shortcuts import redirect
+from django.db.models import Q
 
 # management/views.py
 
@@ -105,7 +107,25 @@ def dashboard(request):
     return render(request, 'dashboard.html', context)
 
 def rooms(request):
-    return render(request, 'rooms.html')
+    # เปลี่ยนจาก 'q' เป็น 'search' ให้ตรงกับที่ตั้งไว้ใน HTML ครับ
+    search_query = request.GET.get('search', '')
+    status_filter = request.GET.get('status', '')
+
+    # ดึงข้อมูลห้องทั้งหมดมาเป็นฐานก่อน
+    all_rooms = Room.objects.all().order_by('room_number')
+
+    # ถ้ามีการพิมพ์ค้นหา ให้กรองเอาเฉพาะที่เลขห้องตรงกัน
+    if search_query:
+        all_rooms = all_rooms.filter(room_number__icontains=search_query)
+
+    # ถ้ามีการเลือกสถานะ (status) ให้กรองตามสถานะนั้น
+    if status_filter:
+        all_rooms = all_rooms.filter(status=status_filter)
+    
+    context = {
+        'rooms': all_rooms
+    }
+    return render(request, 'rooms.html', context)
 
 def contracts(request):
     return render(request, 'contracts.html')
@@ -129,8 +149,34 @@ def add_tenant(request):
     return render(request, 'add_tenant.html')
 def add_room(request):
     return render(request, 'add_room.html')
-def add_contract(request):
-    return render(request, 'add_contract.html')
+def add_room(request):
+    if request.method == 'POST':
+        # รับค่าที่ส่งมาจาก Form โดยอ้างอิงจาก 'name' ที่เราเพิ่งใส่ไปใน HTML
+        r_number = request.POST.get('room_number')
+        r_type = request.POST.get('room_type')
+        r_price = request.POST.get('price')
+        r_status = request.POST.get('status')
+        
+        # คาดเดา 'ชั้น' จากตัวเลขห้องตัวแรก (เพราะในฟอร์มไม่มีให้กรอก แต่ Model บังคับต้องมี)
+        try:
+            r_floor = int(''.join(filter(str.isdigit, r_number))[0])
+        except:
+            r_floor = 1
+
+        # บันทึกข้อมูลลงฐานข้อมูล
+        Room.objects.create(
+            room_number=r_number,
+            floor=r_floor,
+            room_type=r_type,
+            price=r_price,
+            status=r_status
+        )
+        
+        # บันทึกเสร็จให้เปลี่ยนหน้ากลับไปที่หน้ารายการห้องพัก
+        return redirect('rooms')
+
+    # ถ้าไม่ใช่ POST (คือผู้ใช้เพิ่งกดเข้ามาหน้านี้ครั้งแรก) ก็ให้แสดงหน้าฟอร์มปกติ
+    return render(request, 'add_room.html')
 def add_bill(request):
     return render(request, 'add_bill.html')
 def add_maintenance(request):
@@ -140,3 +186,37 @@ def add_checkin(request):
 
 def add_checkout(request):
     return render(request, 'add_checkout.html')
+
+def add_contract(request):
+    # ฟังก์ชันสำหรับหน้าเพิ่มสัญญาเช่าใหม่
+    # (สมมติว่าเพื่อนจะตั้งชื่อไฟล์ html ว่า add_contract.html นะครับ)
+    return render(request, 'add_contract.html')
+def edit_room(request, room_id):
+    # ดึงข้อมูลห้องที่ต้องการแก้ไขจากฐานข้อมูล
+    room = Room.objects.get(id=room_id)
+    
+    if request.method == 'POST':
+        # รับค่าที่แก้ไขแล้วจากฟอร์ม
+        room.room_number = request.POST.get('room_number')
+        room.room_type = request.POST.get('room_type')
+        room.price = request.POST.get('price')
+        room.status = request.POST.get('status')
+        
+        # คาดเดา 'ชั้น' ใหม่เผื่อมีการเปลี่ยนเลขห้อง
+        try:
+            room.floor = int(''.join(filter(str.isdigit, room.room_number))[0])
+        except:
+            pass # ถ้าหาไม่ได้ก็ใช้ค่าเดิม
+            
+        # บันทึกการเปลี่ยนแปลง
+        room.save()
+        return redirect('rooms')
+
+    # ถ้าเป็น GET ให้ส่งข้อมูลห้องเดิมไปแสดงในฟอร์ม
+    return render(request, 'edit_room.html', {'room': room})
+
+def delete_room(request, room_id):
+    # ดึงข้อมูลห้องนั้นมา แล้วสั่งลบทิ้งเลย
+    room = Room.objects.get(id=room_id)
+    room.delete()
+    return redirect('rooms')

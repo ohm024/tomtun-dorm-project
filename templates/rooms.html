@@ -1,88 +1,91 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="mb-8 flex justify-between items-center">
+<div class="flex justify-between items-center mb-6">
     <div>
         <h2 class="text-2xl font-bold text-gray-800">จัดการห้องพัก</h2>
         <p class="text-gray-500 text-sm mt-1">รายชื่อห้องพัก สถานะ และข้อมูลพื้นฐาน</p>
     </div>
-    <a href="{% url 'add_room' %}" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center shadow-sm">
+    <a href="{% url 'add_room' %}" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg font-medium text-sm flex items-center shadow-sm transition-colors">
         <i class="fas fa-plus mr-2"></i> เพิ่มห้องใหม่
     </a>
-    </button>
 </div>
 
-<div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+<div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
     
-    <div class="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
-        <div class="relative">
-            <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-            <input type="text" placeholder="ค้นหาเลขห้อง..." class="pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-teal-500 w-64">
-        </div>
-        <div class="flex space-x-2">
-            <select class="border border-gray-200 rounded-lg text-sm px-3 py-2 focus:outline-none focus:border-teal-500 text-gray-600">
-                <option>สถานะทั้งหมด</option>
-                <option>ว่าง</option>
-                <option>มีผู้เช่า</option>
-                <option>ซ่อมแซม</option>
-            </select>
-        </div>
+    <div class="p-4 border-b border-gray-100 bg-gray-50/50 flex flex-wrap gap-4 justify-between items-center">
+        <form method="GET" action="" class="w-full flex flex-wrap gap-4 justify-between">
+            
+            <div class="relative w-full md:w-64">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="fas fa-search text-gray-400"></i>
+                </div>
+                <input type="text" name="search" value="{{ request.GET.search }}" class="w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 bg-white" placeholder="ค้นหาเลขห้อง...">
+            </div>
+            
+            <div>
+                <select name="status" onchange="this.form.submit()" class="border border-gray-200 rounded-lg text-sm px-4 py-2.5 focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 text-gray-600 bg-white cursor-pointer">
+                    <option value="">สถานะทั้งหมด</option>
+                    <option value="available" {% if request.GET.status == 'available' %}selected{% endif %}>ว่าง</option>
+                    <option value="occupied" {% if request.GET.status == 'occupied' %}selected{% endif %}>มีผู้เช่า</option>
+                    <option value="maintenance" {% if request.GET.status == 'maintenance' %}selected{% endif %}>ซ่อมแซม</option>
+                    <option value="booked" {% if request.GET.status == 'booked' %}selected{% endif %}>จองแล้ว</option>
+                </select>
+            </div>
+        </form>
     </div>
 
     <div class="overflow-x-auto">
-        <table class="w-full text-left border-collapse">
-            <thead>
-                <tr class="bg-white border-b border-gray-100 text-xs text-gray-400 uppercase tracking-wider">
-                    <th class="p-4 font-semibold">เลขห้อง</th>
-                    <th class="p-4 font-semibold">ประเภท</th>
-                    <th class="p-4 font-semibold">ราคา/เดือน</th>
-                    <th class="p-4 font-semibold">สถานะ</th>
-                    <th class="p-4 font-semibold">ผู้เช่าปัจจุบัน</th>
-                    <th class="p-4 font-semibold text-right">จัดการ</th>
+        <table class="w-full text-left text-sm text-gray-600 min-w-max">
+            <thead class="bg-gray-50/50 text-gray-500 text-xs uppercase font-semibold">
+                <tr>
+                    <th class="px-6 py-4">เลขห้อง</th>
+                    <th class="px-6 py-4">ประเภท</th>
+                    <th class="px-6 py-4">ราคา/เดือน</th>
+                    <th class="px-6 py-4 text-center">สถานะ</th>
+                    <th class="px-6 py-4">ผู้เช่าปัจจุบัน</th>
+                    <th class="px-6 py-4 text-right">จัดการ</th>
                 </tr>
             </thead>
-            <tbody class="text-sm text-gray-700">
-                <tr class="border-b border-gray-50 hover:bg-gray-50 transition-colors">
-                    <td class="p-4 font-bold text-gray-800">101</td>
-                    <td class="p-4">Standard</td>
-                    <td class="p-4">฿4,500</td>
-                    <td class="p-4">
-                        <span class="bg-teal-50 text-teal-700 px-3 py-1 rounded-full text-[11px] font-bold tracking-wide">มีผู้เช่า</span>
+            <tbody class="divide-y divide-gray-100">
+                {% for room in rooms %}
+                <tr class="hover:bg-gray-50 transition-colors group">
+                    <td class="px-6 py-4 font-bold text-gray-800">{{ room.room_number }}</td>
+                    <td class="px-6 py-4">{{ room.room_type }}</td>
+                    <td class="px-6 py-4">฿{{ room.price }}</td>
+                    <td class="px-6 py-4 text-center">
+                        {% if room.status == 'occupied' %}
+                            <span class="bg-teal-50 text-teal-700 px-3 py-1 rounded-full text-[11px] font-bold tracking-wide">มีผู้เช่า</span>
+                        {% elif room.status == 'available' %}
+                            <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-[11px] font-bold tracking-wide">ว่าง</span>
+                        {% elif room.status == 'maintenance' %}
+                            <span class="bg-orange-50 text-orange-600 px-3 py-1 rounded-full text-[11px] font-bold tracking-wide">ซ่อมแซม</span>
+                        {% elif room.status == 'booked' %}
+                            <span class="bg-blue-50 text-blue-600 px-3 py-1 rounded-full text-[11px] font-bold tracking-wide">จองแล้ว</span>
+                        {% else %}
+                            <span class="bg-red-100 text-red-600 px-3 py-1 rounded-full text-[11px] font-bold tracking-wide">ข้อมูลผิดพลาด</span>
+                        {% endif %}
                     </td>
-                    <td class="p-4">คุณสมชาย ใจดี</td>
-                    <td class="p-4 text-right space-x-3">
-                        <button class="text-gray-400 hover:text-blue-500 transition-colors"><i class="fas fa-edit"></i></button>
-                        <button class="text-gray-400 hover:text-red-500 transition-colors"><i class="fas fa-trash"></i></button>
+                    <td class="px-6 py-4 text-gray-400">
+                        -
                     </td>
-                </tr>
-                
-                <tr class="border-b border-gray-50 hover:bg-gray-50 transition-colors">
-                    <td class="p-4 font-bold text-gray-800">102</td>
-                    <td class="p-4">Standard</td>
-                    <td class="p-4">฿4,500</td>
-                    <td class="p-4">
-                        <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-[11px] font-bold tracking-wide">ว่าง</span>
-                    </td>
-                    <td class="p-4 text-gray-400">-</td>
-                    <td class="p-4 text-right space-x-3">
-                        <button class="text-gray-400 hover:text-blue-500 transition-colors"><i class="fas fa-edit"></i></button>
-                        <button class="text-gray-400 hover:text-red-500 transition-colors"><i class="fas fa-trash"></i></button>
-                    </td>
-                </tr>
-
-                <tr class="border-b border-gray-50 hover:bg-gray-50 transition-colors">
-                    <td class="p-4 font-bold text-gray-800">201</td>
-                    <td class="p-4">Deluxe</td>
-                    <td class="p-4">฿6,500</td>
-                    <td class="p-4">
-                        <span class="bg-orange-50 text-orange-600 px-3 py-1 rounded-full text-[11px] font-bold tracking-wide">ซ่อมแซม</span>
-                    </td>
-                    <td class="p-4 text-gray-400">-</td>
-                    <td class="p-4 text-right space-x-3">
-                        <button class="text-gray-400 hover:text-blue-500 transition-colors"><i class="fas fa-edit"></i></button>
-                        <button class="text-gray-400 hover:text-red-500 transition-colors"><i class="fas fa-trash"></i></button>
+                    <td class="px-6 py-4 text-right space-x-2">
+                        <a href="{% url 'edit_room' room.id %}" class="text-gray-400 hover:text-teal-600 transition-colors" title="แก้ไข">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a href="{% url 'delete_room' room.id %}" onclick="return confirm('คุณแน่ใจหรือไม่ว่าต้องการลบห้อง {{ room.room_number }}? ข้อมูลจะหายไปถาวรเลยนะ!');" class="text-gray-400 hover:text-red-600 transition-colors" title="ลบ">
+                            <i class="fas fa-trash"></i>
+                        </a>
                     </td>
                 </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="px-6 py-8 text-center text-gray-500">
+                        <i class="fas fa-box-open text-gray-300 text-3xl mb-3 block"></i>
+                        ยังไม่มีข้อมูลห้องพัก
+                    </td>
+                </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>

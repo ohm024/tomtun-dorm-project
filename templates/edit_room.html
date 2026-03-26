@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="mb-6">
+    <a href="{% url 'rooms' %}" class="text-teal-600 hover:text-teal-700 text-sm mb-2 inline-block font-medium">
+        <i class="fas fa-arrow-left mr-1"></i> กลับไปหน้าจัดการห้องพัก
+    </a>
+    <h2 class="text-2xl font-bold text-gray-800">แก้ไขข้อมูลห้อง {{ room.room_number }}</h2>
+    <p class="text-gray-500 text-sm mt-1">อัปเดตข้อมูลของห้องพักนี้</p>
+</div>
+
+<div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm max-w-3xl">
+    <form action="" method="POST" class="space-y-6">
+        {% csrf_token %}
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="md:col-span-2 border-b border-gray-100 pb-2">
+                <h3 class="text-lg font-bold text-gray-800"><i class="fas fa-edit text-teal-600 mr-2"></i>ข้อมูลพื้นฐานห้องพัก</h3>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">เลขห้อง <span class="text-red-500">*</span></label>
+                <input type="text" name="room_number" value="{{ room.room_number }}" class="w-full text-sm border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 px-4 py-2.5 border bg-gray-50" required>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">ประเภทห้องพัก <span class="text-red-500">*</span></label>
+                <select name="room_type" class="w-full text-sm border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 px-4 py-2.5 border bg-white" required>
+                    <option value="Standard" {% if room.room_type == 'Standard' %}selected{% endif %}>Standard (พัดลม)</option>
+                    <option value="Deluxe" {% if room.room_type == 'Deluxe' %}selected{% endif %}>Deluxe (แอร์)</option>
+                    <option value="Suite" {% if room.room_type == 'Suite' %}selected{% endif %}>Suite (ห้องใหญ่+แอร์)</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">ราคาค่าเช่า (บาท/เดือน) <span class="text-red-500">*</span></label>
+                <input type="number" name="price" value="{{ room.price }}" class="w-full text-sm border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 px-4 py-2.5 border bg-gray-50" required>
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">สถานะ <span class="text-red-500">*</span></label>
+                <select name="status" class="w-full text-sm border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 px-4 py-2.5 border bg-white" required>
+                    <option value="available" {% if room.status == 'available' %}selected{% endif %}>ว่าง</option>
+                    <option value="occupied" {% if room.status == 'occupied' %}selected{% endif %}>มีผู้เช่า</option>
+                    <option value="booked" {% if room.status == 'booked' %}selected{% endif %}>จองแล้ว</option>
+                    <option value="maintenance" {% if room.status == 'maintenance' %}selected{% endif %}>ซ่อมแซม</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="pt-6 flex justify-end space-x-3 mt-8">
+            <a href="{% url 'rooms' %}" class="px-5 py-2.5 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-bold text-sm">
+                ยกเลิก
+            </a>
+            <button type="submit" class="bg-teal-600 hover:bg-teal-700 text-white px-6 py-2.5 rounded-lg font-bold transition-colors shadow-sm text-sm flex items-center">
+                <i class="fas fa-save mr-2"></i> บันทึกการเปลี่ยนแปลง
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}
