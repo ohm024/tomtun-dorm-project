@@ -46,3 +46,8 @@ def add_bill(request):
     return render(request, 'add_bill.html')
 def add_maintenance(request):
     return render(request, 'add_maintenance.html')
+def add_checkin(request):
+    return render(request, 'add_checkin.html')
+
+def add_checkout(request):
+    return render(request, 'add_checkout.html')

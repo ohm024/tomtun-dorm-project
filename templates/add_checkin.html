@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="mb-6">
+    <a href="{% url 'check_in_out' %}" class="text-teal-600 hover:text-teal-700 text-sm mb-2 inline-block font-medium">
+        <i class="fas fa-arrow-left mr-1"></i> กลับไปหน้าเช็คอิน/เช็คเอาท์
+    </a>
+    <h2 class="text-2xl font-bold text-gray-800">ทำรายการเช็คอิน (Check-in)</h2>
+    <p class="text-gray-500 text-sm mt-1">บันทึกข้อมูลการเข้าพัก เลขมิเตอร์เริ่มต้น และการส่งมอบกุญแจ</p>
+</div>
+
+<div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm max-w-3xl">
+    <form action="{% url 'check_in_out' %}" method="GET" class="space-y-6">
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">เลือกห้องพัก <span class="text-red-500">*</span></label>
+                <select class="w-full text-sm border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 px-4 py-2.5 border bg-white" required>
+                    <option value="">-- เลือกห้องพักที่ว่าง --</option>
+                    <option value="103">103 - คุณสมชาย (จองไว้)</option>
+                    <option value="104">104 - คุณสมหญิง (จองไว้)</option>
+                </select>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">วันที่เช็คอิน <span class="text-red-500">*</span></label>
+                <input type="datetime-local" class="w-full text-sm border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 px-4 py-2.5 border bg-gray-50" required>
+            </div>
+
+            <div class="md:col-span-2 grid grid-cols-2 gap-4 mt-2">
+                <div class="bg-blue-50/50 p-4 rounded-xl border border-blue-100">
+                    <label class="block text-sm font-bold text-blue-800 mb-2"><i class="fas fa-tint mr-1"></i> เลขมิเตอร์น้ำเริ่มต้น</label>
+                    <input type="number" class="w-full text-sm border-gray-300 rounded-lg px-3 py-2 border bg-white" placeholder="หน่วย" required>
+                </div>
+                <div class="bg-yellow-50/50 p-4 rounded-xl border border-yellow-100">
+                    <label class="block text-sm font-bold text-yellow-800 mb-2"><i class="fas fa-bolt mr-1"></i> เลขมิเตอร์ไฟเริ่มต้น</label>
+                    <input type="number" class="w-full text-sm border-gray-300 rounded-lg px-3 py-2 border bg-white" placeholder="หน่วย" required>
+                </div>
+            </div>
+
+            <div class="md:col-span-2 flex items-center mt-2">
+                <input type="checkbox" id="key_given" class="w-5 h-5 text-teal-600 bg-gray-100 border-gray-300 rounded focus:ring-teal-500" required>
+                <label for="key_given" class="ml-2 text-sm font-medium text-gray-800">ผู้เช่าได้รับกุญแจห้องและคีย์การ์ดเรียบร้อยแล้ว</label>
+            </div>
+            
+            <div class="md:col-span-2">
+                <label class="block text-sm font-bold text-gray-700 mb-1">หมายเหตุสภาพห้อง</label>
+                <textarea class="w-full text-sm border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 px-4 py-2.5 border bg-gray-50" rows="2" placeholder="เช่น รอยขีดข่วนที่ประตู (ถ้ามี)"></textarea>
+            </div>
+        </div>
+
+        <div class="pt-6 flex justify-end space-x-3 border-t border-gray-100">
+            <a href="{% url 'check_in_out' %}" class="px-5 py-2.5 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-bold text-sm">ยกเลิก</a>
+            <button type="submit" class="bg-teal-600 hover:bg-teal-700 text-white px-6 py-2.5 rounded-lg font-bold transition-colors shadow-sm text-sm flex items-center">
+                <i class="fas fa-check-circle mr-2"></i> ยืนยันการเช็คอิน
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}
