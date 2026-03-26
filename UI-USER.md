@@ -36,3 +36,7 @@
 
 <img width="525" height="762" alt="image" src="https://github.com/user-attachments/assets/cbdee565-1acb-4ece-97fe-bdf59be6a475" />
 
+แจ้งซ่อม 
+
+<img width="694" height="764" alt="image" src="https://github.com/user-attachments/assets/b77d47b5-ce98-4559-9f1d-58d3c2df6c3c" />
+
