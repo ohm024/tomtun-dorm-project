@@ -101,5 +101,21 @@ def dashboard(request):
         'bar_chart_labels': bar_chart_labels, # ["ม.ค.", "ก.พ.", ...]
         'bar_chart_data': bar_chart_data,     # [0, 4500, 0, ...]
     }
-
+    
     return render(request, 'dashboard.html', context)
+
+def rooms(request):
+    return render(request, 'rooms.html')
+
+def contracts(request):
+    return render(request, 'contracts.html')
+
+def check_in_out(request):
+    return render(request, 'check_in_out.html')
+
+def tenants(request):
+    return render(request, 'tenants.html')
+
+# 👇 เพิ่มฟังก์ชันนี้สำหรับหน้า "บิลค่าเช่า" ครับ
+def billing(request):
+    return render(request, 'billing.html')

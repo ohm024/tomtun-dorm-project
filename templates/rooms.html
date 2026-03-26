@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="mb-8 flex justify-between items-center">
+    <div>
+        <h2 class="text-2xl font-bold text-gray-800">จัดการห้องพัก</h2>
+        <p class="text-gray-500 text-sm mt-1">รายชื่อห้องพัก สถานะ และข้อมูลพื้นฐาน</p>
+    </div>
+    <button class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center">
+        <i class="fas fa-plus mr-2"></i> เพิ่มห้องใหม่
+    </button>
+</div>
+
+<div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+    
+    <div class="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+        <div class="relative">
+            <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+            <input type="text" placeholder="ค้นหาเลขห้อง..." class="pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-teal-500 w-64">
+        </div>
+        <div class="flex space-x-2">
+            <select class="border border-gray-200 rounded-lg text-sm px-3 py-2 focus:outline-none focus:border-teal-500 text-gray-600">
+                <option>สถานะทั้งหมด</option>
+                <option>ว่าง</option>
+                <option>มีผู้เช่า</option>
+                <option>ซ่อมแซม</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+            <thead>
+                <tr class="bg-white border-b border-gray-100 text-xs text-gray-400 uppercase tracking-wider">
+                    <th class="p-4 font-semibold">เลขห้อง</th>
+                    <th class="p-4 font-semibold">ประเภท</th>
+                    <th class="p-4 font-semibold">ราคา/เดือน</th>
+                    <th class="p-4 font-semibold">สถานะ</th>
+                    <th class="p-4 font-semibold">ผู้เช่าปัจจุบัน</th>
+                    <th class="p-4 font-semibold text-right">จัดการ</th>
+                </tr>
+            </thead>
+            <tbody class="text-sm text-gray-700">
+                <tr class="border-b border-gray-50 hover:bg-gray-50 transition-colors">
+                    <td class="p-4 font-bold text-gray-800">101</td>
+                    <td class="p-4">Standard</td>
+                    <td class="p-4">฿4,500</td>
+                    <td class="p-4">
+                        <span class="bg-teal-50 text-teal-700 px-3 py-1 rounded-full text-[11px] font-bold tracking-wide">มีผู้เช่า</span>
+                    </td>
+                    <td class="p-4">คุณสมชาย ใจดี</td>
+                    <td class="p-4 text-right space-x-3">
+                        <button class="text-gray-400 hover:text-blue-500 transition-colors"><i class="fas fa-edit"></i></button>
+                        <button class="text-gray-400 hover:text-red-500 transition-colors"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+                
+                <tr class="border-b border-gray-50 hover:bg-gray-50 transition-colors">
+                    <td class="p-4 font-bold text-gray-800">102</td>
+                    <td class="p-4">Standard</td>
+                    <td class="p-4">฿4,500</td>
+                    <td class="p-4">
+                        <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-[11px] font-bold tracking-wide">ว่าง</span>
+                    </td>
+                    <td class="p-4 text-gray-400">-</td>
+                    <td class="p-4 text-right space-x-3">
+                        <button class="text-gray-400 hover:text-blue-500 transition-colors"><i class="fas fa-edit"></i></button>
+                        <button class="text-gray-400 hover:text-red-500 transition-colors"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+
+                <tr class="border-b border-gray-50 hover:bg-gray-50 transition-colors">
+                    <td class="p-4 font-bold text-gray-800">201</td>
+                    <td class="p-4">Deluxe</td>
+                    <td class="p-4">฿6,500</td>
+                    <td class="p-4">
+                        <span class="bg-orange-50 text-orange-600 px-3 py-1 rounded-full text-[11px] font-bold tracking-wide">ซ่อมแซม</span>
+                    </td>
+                    <td class="p-4 text-gray-400">-</td>
+                    <td class="p-4 text-right space-x-3">
+                        <button class="text-gray-400 hover:text-blue-500 transition-colors"><i class="fas fa-edit"></i></button>
+                        <button class="text-gray-400 hover:text-red-500 transition-colors"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
