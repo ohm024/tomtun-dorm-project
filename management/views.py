@@ -30,3 +30,7 @@ def tenants(request):
 # 👇 เพิ่มฟังก์ชันนี้สำหรับหน้า "บิลค่าเช่า" ครับ
 def billing(request):
     return render(request, 'billing.html')
+def maintenance(request):
+    return render(request, 'maintenance.html')
+def settings_view(request):
+    return render(request, 'settings.html')

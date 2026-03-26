@@ -14,5 +14,7 @@ urlpatterns = [
     path('tenants/', views.tenants, name='tenants'),       # หน้าจัดการผู้เช่า
     
     # เพิ่มบรรทัดนี้สำหรับหน้าบิลค่าเช่าที่เราทำค้างไว้ครับ
-    path('billing/', views.billing, name='billing'),       
+    path('billing/', views.billing, name='billing'),
+    path('maintenance/', views.maintenance, name='maintenance'), 
+    path('settings/', views.settings_view, name='settings'),      
 ]

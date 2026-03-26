@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="mb-8">
+    <h2 class="text-2xl font-bold text-gray-800">การตั้งค่าระบบ</h2>
+    <p class="text-gray-500 text-sm mt-1">จัดการข้อมูลหอพัก ค่าน้ำ-ค่าไฟ และบัญชีรับชำระเงิน</p>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+        <div class="flex items-center mb-4">
+            <div class="w-10 h-10 rounded-full bg-teal-50 flex items-center justify-center text-teal-600 mr-3">
+                <i class="fas fa-building"></i>
+            </div>
+            <h3 class="font-bold text-gray-800">ข้อมูลหอพัก</h3>
+        </div>
+        <div class="space-y-4">
+            <div>
+                <label class="block text-xs font-bold text-gray-500 uppercase mb-1">ชื่อหอพัก</label>
+                <input type="text" value="หอพัก ต้มตุ๋น" class="w-full text-sm border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 px-3 py-2 border bg-gray-50">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-gray-500 uppercase mb-1">ที่อยู่</label>
+                <textarea class="w-full text-sm border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 px-3 py-2 border bg-gray-50" rows="2">123 ซอยรวยล้นฟ้า ถ.มหาเศรษฐี กรุงเทพฯ 10000</textarea>
+            </div>
+            <button class="bg-teal-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-teal-700 w-full transition-colors">
+                บันทึกข้อมูล
+            </button>
+        </div>
+    </div>
+
+    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+        <div class="flex items-center mb-4">
+            <div class="w-10 h-10 rounded-full bg-amber-50 flex items-center justify-center text-amber-500 mr-3">
+                <i class="fas fa-bolt"></i>
+            </div>
+            <h3 class="font-bold text-gray-800">เรทค่าน้ำ - ค่าไฟ</h3>
+        </div>
+        <div class="space-y-4">
+            <div class="flex items-center justify-between border-b border-gray-50 pb-3">
+                <span class="text-sm font-medium text-gray-700">ค่าไฟ (บาท/หน่วย)</span>
+                <input type="number" value="8" class="w-20 text-sm border-gray-300 rounded-lg text-center px-2 py-1 border focus:ring-teal-500 focus:border-teal-500">
+            </div>
+            <div class="flex items-center justify-between border-b border-gray-50 pb-3">
+                <span class="text-sm font-medium text-gray-700">ค่าน้ำ (บาท/หน่วย)</span>
+                <input type="number" value="18" class="w-20 text-sm border-gray-300 rounded-lg text-center px-2 py-1 border focus:ring-teal-500 focus:border-teal-500">
+            </div>
+            <div class="flex items-center justify-between pb-3">
+                <span class="text-sm font-medium text-gray-700">ค่าส่วนกลาง (บาท/เดือน)</span>
+                <input type="number" value="300" class="w-20 text-sm border-gray-300 rounded-lg text-center px-2 py-1 border focus:ring-teal-500 focus:border-teal-500">
+            </div>
+            <button class="bg-teal-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-teal-700 w-full transition-colors">
+                อัปเดตเรทราคา
+            </button>
+        </div>
+    </div>
+    
+    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm md:col-span-2">
+        <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center">
+                <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-500 mr-3">
+                    <i class="fas fa-money-check-alt"></i>
+                </div>
+                <h3 class="font-bold text-gray-800">บัญชีรับชำระเงิน</h3>
+            </div>
+            <button class="text-teal-600 font-bold text-sm hover:underline"><i class="fas fa-plus mr-1"></i> เพิ่มบัญชี</button>
+        </div>
+        <div class="bg-gray-50 p-4 rounded-xl flex items-center justify-between border border-gray-100">
+            <div class="flex items-center space-x-4">
+                <div class="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center text-white font-bold text-xl shadow-sm">K</div>
+                <div>
+                    <p class="font-bold text-gray-800">ธนาคารกสิกรไทย</p>
+                    <p class="text-sm text-gray-500">นายสมชาย ใจดี • 123-4-56789-0</p>
+                </div>
+            </div>
+            <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-[10px] font-bold uppercase">บัญชีหลัก</span>
+        </div>
+    </div>
+</div>
+{% endblock %}
