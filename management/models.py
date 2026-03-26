@@ -53,3 +53,19 @@ class Invoice(models.Model):
 
     def __str__(self):
         return f"บิลห้อง {self.room.room_number} ({self.month})"
+    
+class MaintenanceRequest(models.Model):
+    STATUS_CHOICES = [
+        ('pending', 'รอดำเนินการ'),
+        ('in_progress', 'กำลังซ่อม'),
+        ('completed', 'เสร็จสิ้น'),
+    ]
+    
+    room = models.ForeignKey(Room, on_delete=models.CASCADE, verbose_name="ห้องพัก")
+    title = models.CharField(max_length=200, verbose_name="หัวข้อแจ้งซ่อม") # เช่น แอร์ไม่เย็น, น้ำรั่ว
+    description = models.TextField(blank=True, verbose_name="รายละเอียดเพิ่มเติม")
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending', verbose_name="สถานะ")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="วันที่แจ้ง")
+
+    def __str__(self):
+        return f"แจ้งซ่อม {self.room.room_number}: {self.title}"
