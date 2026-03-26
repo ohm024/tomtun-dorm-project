@@ -46,4 +46,72 @@
     </div>
 
 </div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
+    
+    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 lg:col-span-2">
+        <h3 class="text-lg font-bold text-gray-800 mb-4">กราฟรายได้ย้อนหลัง 12 เดือน</h3>
+        <div class="flex items-center justify-center h-64 bg-gray-50 rounded-lg border border-dashed border-gray-200">
+            <p class="text-gray-400">เดี๋ยวเรามาทำกราฟแท่งตรงนี้กันครับ 📊</p>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col items-center">
+        <h3 class="text-lg font-bold text-gray-800 mb-4 w-full text-left">สัดส่วนสถานะห้องพัก</h3>
+        
+        <div class="relative w-full h-64 flex justify-center items-center">
+            <div class="absolute flex flex-col items-center justify-center pointer-events-none">
+                <span class="text-3xl font-bold text-gray-800">{{ total_rooms }}</span>
+                <span class="text-xs text-gray-400 font-medium uppercase">Total</span>
+            </div>
+            
+            <canvas id="roomStatusChart"></canvas>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    // 1. ดึงพื้นที่วาดกราฟ (Canvas) ที่เราเตรียมไว้ใน Step 1
+    const ctx = document.getElementById('roomStatusChart').getContext('2d');
+    
+    // 2. สั่ง Chart.js ให้วาดรูป
+    const roomStatusChart = new Chart(ctx, {
+        type: 'doughnut', // บอกว่าจะเอากราฟโดนัท
+        data: {
+            // ชื่อป้ายกำกับ
+            labels: ['มีผู้เช่า', 'ว่าง', 'ซ่อมแซม'], 
+            datasets: [{
+                // 💥 ไฮไลต์สำคัญ: ดึงตัวเลขจาก Django (views.py) มายัดใส่กราฟตรงนี้เลย!
+                data: [
+                    {{ occupied_rooms|default:0 }},   // จำนวนห้องที่มีคนอยู่
+                    {{ available_rooms|default:0 }},  // จำนวนห้องว่าง
+                    {{ maintenance_rooms|default:0 }} // จำนวนห้องซ่อม
+                ],
+                // ตั้งค่าสีให้ตรงกับ Figma (เขียวเข้ม, ฟ้าอ่อน, แดง)
+                backgroundColor: [
+                    '#064e3b', // สีเขียวเข้ม (มีผู้เช่า)
+                    '#ccfbf1', // สีฟ้าอ่อน (ว่าง)
+                    '#9a3412', // สีน้ำตาลอมส้ม (ซ่อมแซม)
+                ],
+                borderWidth: 0, // ไม่เอาเส้นขอบ
+                hoverOffset: 4  // เวลามือถือไปชี้ให้กราฟเด้งออกมานิดนึง
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '75%', // ควบคุมความกว้างของรูโดนัท (75% คือรูกว้างๆ แบบ Figma)
+            plugins: {
+                legend: {
+                    position: 'bottom', // เอาจุดสีบอกสถานะไว้ด้านล่าง
+                    labels: {
+                        usePointStyle: true, // เปลี่ยนสี่เหลี่ยมเป็นจุดกลมๆ
+                        padding: 20
+                    }
+                }
+            }
+        }
+    });
+</script>
+</div>
 {% endblock %}
