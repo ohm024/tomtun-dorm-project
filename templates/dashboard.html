@@ -22,7 +22,7 @@
             <div class="w-10 h-10 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center"><i class="fas fa-chart-line"></i></div>
             <span class="text-[10px] font-bold text-gray-500 bg-gray-50 px-2 py-1 rounded tracking-wider">GROWTH</span>
         </div>
-        <h3 class="text-3xl font-bold text-gray-800 mt-4">85%</h3>
+        <h3 class="text-3xl font-bold text-gray-800 mt-4">{{ occupancy_rate|floatformat:0 }}%</h3>
         <p class="text-xs text-gray-500 mt-2">อัตราการเช่าเดือนนี้</p>
     </div>
 
@@ -31,7 +31,7 @@
             <div class="w-10 h-10 rounded-full bg-green-50 text-green-500 flex items-center justify-center"><i class="fas fa-money-bill-wave"></i></div>
             <span class="text-[10px] font-bold text-gray-500 bg-gray-50 px-2 py-1 rounded tracking-wider">REVENUE</span>
         </div>
-        <h3 class="text-3xl font-bold text-gray-800 mt-4">฿540,000</h3>
+        <h3 class="text-3xl font-bold text-gray-800 mt-4">฿{{ expected_revenue }}</h3>
         <p class="text-xs text-gray-500 mt-2">รายได้คาดการณ์เดือนนี้</p>
     </div>
 
@@ -41,8 +41,8 @@
             <div class="w-10 h-10 rounded-full bg-red-50 text-red-500 flex items-center justify-center"><i class="fas fa-exclamation-circle"></i></div>
             <span class="text-[10px] font-bold text-red-500 bg-red-50 px-2 py-1 rounded tracking-wider">OVERDUE</span>
         </div>
-        <h3 class="text-3xl font-bold text-red-500 mt-4">฿15,000</h3>
-        <p class="text-xs text-red-500 mt-2 font-medium"><i class="fas fa-user-clock mr-1"></i> มีคนค้างชำระก่อนกำหนด</p>
+        <h3 class="text-3xl font-bold text-red-500 mt-4">฿{{ overdue_amount }}</h3>
+        <p class="text-xs text-red-500 mt-2 font-medium"><i class="fas fa-user-clock mr-1"></i>มีค้างชำระ {{ overdue_count }} ราย</p>
     </div>
 
 </div>

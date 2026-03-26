@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Room,Tenant
+from .models import Room,Tenant,Invoice
 
 # ปรับแต่งหน้าตาของตาราง Room ในหน้า Admin
 @admin.register(Room)
@@ -18,3 +18,9 @@ class TenantAdmin(admin.ModelAdmin):
     
     # สร้างตัวกรองข้อมูลด้านขวามือ
     list_filter = ('is_active',)
+
+@admin.register(Invoice)
+class InvoiceAdmin(admin.ModelAdmin):
+    list_display = ('room', 'tenant', 'month', 'amount', 'due_date', 'status')
+    list_filter = ('status', 'month')
+    search_fields = ('room__room_number', 'tenant__first_name')

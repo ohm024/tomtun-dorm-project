@@ -31,3 +31,25 @@ class Tenant(models.Model):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} (ห้อง {self.room.room_number if self.room else 'ยังไม่มีห้อง'})"
+    
+    # ... (โค้ด Room และ Tenant เดิมอยู่ด้านบน) ...
+
+class Invoice(models.Model):
+    # เชื่อมกับตารางผู้เช่าและห้องพัก (ใช้ ForeignKey เพราะ 1 ห้อง/1 คน สามารถมีบิลได้หลายใบในหลายๆ เดือน)
+    tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE, verbose_name="ผู้เช่า")
+    room = models.ForeignKey(Room, on_delete=models.CASCADE, verbose_name="ห้องพัก")
+    
+    month = models.CharField(max_length=50, verbose_name="บิลประจำเดือน (เช่น ม.ค. 2026)")
+    amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="ยอดชำระรวม")
+    due_date = models.DateField(verbose_name="วันครบกำหนดชำระ")
+    
+    # สถานะของบิล
+    STATUS_CHOICES = [
+        ('pending', 'รอชำระ'),
+        ('paid', 'ชำระแล้ว'),
+        ('overdue', 'เกินกำหนด'),
+    ]
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending', verbose_name="สถานะ")
+
+    def __str__(self):
+        return f"บิลห้อง {self.room.room_number} ({self.month})"
