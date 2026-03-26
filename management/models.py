@@ -69,3 +69,29 @@ class MaintenanceRequest(models.Model):
 
     def __str__(self):
         return f"แจ้งซ่อม {self.room.room_number}: {self.title}"
+# models.py (เพิ่มต่อท้าย)
+
+class Contract(models.Model):
+    CONTRACT_TYPES = (
+        ('lease', 'สัญญาเช่า (เข้าพักเลย)'),
+        ('booking', 'จองห้องพัก'),
+    )
+    STATUS_CHOICES = (
+        ('active', 'กำลังเช่า (Active)'),
+        ('expiring', 'ใกล้หมดอายุ'),
+        ('pending', 'รอเซ็นสัญญา'),
+    )
+
+    contract_number = models.CharField(max_length=20, unique=True, verbose_name="เลขที่สัญญา")
+    contract_type = models.CharField(max_length=20, choices=CONTRACT_TYPES, verbose_name="ประเภทเอกสาร")
+    room = models.ForeignKey(Room, on_delete=models.SET_NULL, null=True, verbose_name="ห้องพัก")
+    tenant_name = models.CharField(max_length=150, verbose_name="ชื่อผู้เช่า/ผู้จอง")
+    start_date = models.DateField(verbose_name="วันที่เริ่มต้น")
+    end_date = models.DateField(null=True, blank=True, verbose_name="วันที่สิ้นสุด")
+    deposit = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="เงินมัดจำ/ประกัน")
+    notes = models.TextField(blank=True, null=True, verbose_name="หมายเหตุเพิ่มเติม")
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='active', verbose_name="สถานะ")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.contract_number} - {self.tenant_name}"
