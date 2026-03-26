@@ -51,8 +51,7 @@
     
     <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 lg:col-span-2">
         <h3 class="text-lg font-bold text-gray-800 mb-4">กราฟรายได้ย้อนหลัง 12 เดือน</h3>
-        <div class="flex items-center justify-center h-64 bg-gray-50 rounded-lg border border-dashed border-gray-200">
-            <p class="text-gray-400">เดี๋ยวเรามาทำกราฟแท่งตรงนี้กันครับ 📊</p>
+        <div class="h-64 relative"> <canvas id="revenueBarChart"></canvas>
         </div>
     </div>
 
@@ -155,6 +154,82 @@
                     labels: {
                         usePointStyle: true, // เปลี่ยนสี่เหลี่ยมเป็นจุดกลมๆ
                         padding: 20
+                    }
+                }
+            }
+        }
+    });
+</script>
+<script>
+    // 1. ดึงพื้นที่วาดกราฟแท่ง (Canvas)
+    const ctxBar = document.getElementById('revenueBarChart').getContext('2d');
+    
+    // 2. สั่ง Chart.js วาดกราฟแท่ง (Bar Chart)
+    const revenueBarChart = new Chart(ctxBar, {
+        type: 'bar', // บอกว่าเอากราฟแท่ง
+        data: {
+            // 💥 ดึงตัวแปรป้ายเดือนภาษาไทยจาก Python ยัดใส่ตรงนี้ ["ม.ค.", "ก.พ.", ...]
+            labels: {{ bar_chart_labels|safe }}, 
+            datasets: [{
+                label: 'รายได้ (฿)',
+                // 💥 ดึงตัวเลขรายใด้จริงจาก Python ยัดใส่ตรงนี้ [0, 4500, 0, ...]
+                data: {{ bar_chart_data|safe }}, 
+                backgroundColor: '#ccfbf1', // สีฟ้าอ่อน base color แบบ Figma
+                hoverBackgroundColor: '#064e3b', // สีเขียวเข้มตอนมือชี้ แบบ Figma
+                borderRadius: 10, // ทำให้แท่งกราฟด้านบนมีขอบมนแบบ Figma
+                borderSkipped: false, // จำเป็นต้องมีเพื่อให้ขอบมนแสดงผลถูกต้องที่ด้านบน
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false // ซ่อนตำนาน (Legend) ด้านบนเพื่อให้คลีนเหมือนแบบ Figma
+                },
+                tooltip: {
+                    // ปรับรูปแบบ Tooltip ตอนมือชี้ให้มี฿
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.dataset.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            if (context.parsed.y !== null) {
+                                // จัดรูปแบบเงินบาทไทย
+                                label += new Intl.NumberFormat('th-TH', { style: 'currency', currency: 'THB', minimumFractionDigits: 0 }).format(context.parsed.y);
+                            }
+                            return label;
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: {
+                        display: false, // ปิดเส้นตารางแนวตั้งแบบ Figma
+                    },
+                    ticks: {
+                        color: '#9ca3af', // สีตัวหนังสือป้ายเดือนเป็นสีเทา
+                        font: {
+                            size: 10
+                        }
+                    }
+                },
+                y: {
+                    beginAtZero: true, // กราฟเริ่มจากศูนย์เสมอ
+                    grid: {
+                        color: '#f3f4f6', // เส้นตารางแนวนอนจางๆ แบบ Figma
+                    },
+                    ticks: {
+                        color: '#9ca3af', // สีตัวหนังสือตัวเลขเป็นสีเทา
+                        // เติม ฿ หน้าตัวเลขแนวตั้ง
+                        callback: function(value, index, ticks) {
+                            return '฿' + value.toLocaleString();
+                        },
+                        font: {
+                            size: 10
+                        }
                     }
                 }
             }
