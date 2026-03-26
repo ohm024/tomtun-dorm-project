@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="mb-8 flex justify-between items-center">
+    <div>
+        <h2 class="text-2xl font-bold text-gray-800">บิลค่าเช่าและรายรับ</h2>
+        <p class="text-gray-500 text-sm mt-1">จัดการใบแจ้งหนี้ ค่าน้ำ-ค่าไฟ และการบันทึกชำระเงิน</p>
+    </div>
+    <button class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center shadow-sm">
+        <i class="fas fa-plus-circle mr-2"></i> สร้างบิลใหม่
+    </button>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+        <p class="text-gray-400 text-xs font-bold uppercase">ค้างชำระทั้งหมด</p>
+        <p class="text-2xl font-bold text-red-500 mt-1">฿ 15,400</p>
+        <p class="text-[10px] text-gray-400 mt-2"><i class="fas fa-info-circle mr-1"></i> รวมจาก 3 ห้องที่ยังไม่ชำระ</p>
+    </div>
+    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+        <p class="text-gray-400 text-xs font-bold uppercase">ชำระแล้ว (เดือนนี้)</p>
+        <p class="text-2xl font-bold text-teal-600 mt-1">฿ 145,200</p>
+        <p class="text-[10px] text-gray-400 mt-2"><i class="fas fa-check-circle mr-1"></i> อัปเดตล่าสุด: วันนี้ 10:30 น.</p>
+    </div>
+    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+        <p class="text-gray-400 text-xs font-bold uppercase">รอการตรวจสอบ</p>
+        <p class="text-2xl font-bold text-amber-500 mt-1">1 รายการ</p>
+        <p class="text-[10px] text-gray-400 mt-2"><i class="fas fa-clock mr-1"></i> มีแนบสลิปใหม่รอการยืนยัน</p>
+    </div>
+</div>
+
+<div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+    <div class="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+        <h3 class="font-bold text-gray-700 text-sm uppercase">รายการใบแจ้งหนี้ประจำเดือน มีนาคม 2026</h3>
+        <div class="flex space-x-2">
+            <button class="bg-white border border-gray-200 text-gray-600 px-3 py-1.5 rounded-lg text-xs hover:bg-gray-50"><i class="fas fa-file-export mr-1"></i> Export</button>
+        </div>
+    </div>
+
+    <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+            <thead>
+                <tr class="bg-white border-b border-gray-100 text-xs text-gray-400 uppercase tracking-wider">
+                    <th class="p-4 font-semibold text-center w-20">ห้อง</th>
+                    <th class="p-4 font-semibold">ชื่อผู้เช่า</th>
+                    <th class="p-4 font-semibold">ยอดรวมทั้งสิ้น</th>
+                    <th class="p-4 font-semibold">สถานะ</th>
+                    <th class="p-4 font-semibold">วันที่ออกบิล</th>
+                    <th class="p-4 font-semibold text-right">ดำเนินการ</th>
+                </tr>
+            </thead>
+            <tbody class="text-sm text-gray-700">
+                <tr class="border-b border-gray-50 hover:bg-gray-50">
+                    <td class="p-4 text-center font-bold">201</td>
+                    <td class="p-4">คุณสมรักษ์</td>
+                    <td class="p-4 font-bold text-red-500">฿ 8,500</td>
+                    <td class="p-4">
+                        <span class="bg-red-50 text-red-600 px-3 py-1 rounded-full text-[10px] font-bold uppercase">ค้างชำระ</span>
+                    </td>
+                    <td class="p-4 text-gray-500">01/03/2026</td>
+                    <td class="p-4 text-right space-x-2">
+                        <button class="text-teal-600 hover:underline font-bold text-xs">บันทึกชำระ</button>
+                        <button class="text-gray-400 hover:text-gray-600"><i class="fas fa-print"></i></button>
+                    </td>
+                </tr>
+                <tr class="border-b border-gray-50 hover:bg-gray-50">
+                    <td class="p-4 text-center font-bold">101</td>
+                    <td class="p-4">คุณสมชาย ใจดี</td>
+                    <td class="p-4">฿ 4,850</td>
+                    <td class="p-4">
+                        <span class="bg-green-50 text-green-600 px-3 py-1 rounded-full text-[10px] font-bold uppercase">ชำระแล้ว</span>
+                    </td>
+                    <td class="p-4 text-gray-500">01/03/2026</td>
+                    <td class="p-4 text-right">
+                        <button class="text-gray-400 hover:text-gray-600"><i class="fas fa-eye mr-2"></i></button>
+                        <button class="text-gray-400 hover:text-gray-600"><i class="fas fa-print"></i></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
