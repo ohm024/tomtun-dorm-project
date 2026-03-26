@@ -40,3 +40,10 @@
 
 <img width="694" height="764" alt="image" src="https://github.com/user-attachments/assets/b77d47b5-ce98-4559-9f1d-58d3c2df6c3c" />
 
+บิลค่าเช่า
+
+<img width="639" height="766" alt="image" src="https://github.com/user-attachments/assets/c5823b05-4ea7-4e9c-99ea-902bd8b06200" />
+
+ข้อมูลสัญญาเช่า
+
+<img width="658" height="765" alt="image" src="https://github.com/user-attachments/assets/5065d90a-73c5-4d46-8452-2db36b4edeb0" />
