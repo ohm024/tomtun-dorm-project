@@ -1,20 +1,37 @@
 from django.shortcuts import render
-from .models import Room  # สำคัญมาก: ต้องนำเข้า Model Room มาใช้งาน
+from django.db.models import Sum
+from .models import Room, Tenant, Invoice
 
 def dashboard(request):
-    # 1. สั่งให้ Django ไปนับข้อมูลในฐานข้อมูล
-    total_rooms = Room.objects.count() # นับห้องทั้งหมด
-    available_rooms = Room.objects.filter(status='available').count() # นับเฉพาะห้องว่าง
-    occupied_rooms = Room.objects.filter(status='occupied').count() # นับเฉพาะห้องที่มีผู้เช่า
-    maintenance_rooms = Room.objects.filter(status='maintenance').count() # นับเฉพาะห้องซ่อมแซม
+    # 1. นับข้อมูลห้องและผู้เช่า
+    total_rooms = Room.objects.count()
+    available_rooms = Room.objects.filter(status='available').count()
+    maintenance_rooms = Room.objects.filter(status='maintenance').count()
+    occupied_rooms = total_rooms - available_rooms - maintenance_rooms
+    active_tenants = Tenant.objects.filter(is_active=True).count()
 
-    # 2. จับข้อมูลใส่กล่อง (Dictionary) เพื่อส่งไปที่หน้า HTML
+    # 🌟 ส่วนที่เพิ่มใหม่: คำนวณอัตราการเช่า (Occupancy Rate)
+    if total_rooms > 0:
+        occupancy_rate = (occupied_rooms / total_rooms) * 100
+    else:
+        occupancy_rate = 0  # ดักไว้เผื่อระบบยังไม่มีห้องเลย จะได้ไม่ error หารด้วยศูนย์
+
+    # 2. คำนวณเรื่องเงินๆ ทองๆ
+    expected_revenue = Invoice.objects.filter(status__in=['pending', 'paid']).aggregate(total=Sum('amount'))['total'] or 0
+    overdue_amount = Invoice.objects.filter(status='overdue').aggregate(total=Sum('amount'))['total'] or 0
+    overdue_count = Invoice.objects.filter(status='overdue').count()
+
+    # 3. นำตัวเลขใส่กล่องพัสดุ
     context = {
         'total_rooms': total_rooms,
         'available_rooms': available_rooms,
         'occupied_rooms': occupied_rooms,
         'maintenance_rooms': maintenance_rooms,
+        'active_tenants': active_tenants,
+        'occupancy_rate': occupancy_rate,      # 👈 แพ็กเปอร์เซ็นต์อัตราการเช่าใส่กล่อง
+        'expected_revenue': expected_revenue,
+        'overdue_amount': overdue_amount,
+        'overdue_count': overdue_count,
     }
-    
-    # 3. ส่งกล่องข้อมูล (context) ไปพร้อมกับการ render หน้าเว็บ
+
     return render(request, 'dashboard.html', context)
