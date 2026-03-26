@@ -1,117 +1,196 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="mb-6">
+<div class="mb-8">
     <h2 class="text-2xl font-bold text-gray-800">แดชบอร์ด</h2>
-    <p class="text-sm text-gray-500 mt-1">ภาพรวมระบบและสรุปผลการดำเนินงาน</p>
+    <p class="text-gray-500 text-sm mt-1">ภาพรวมระบบและสรุปผลการดำเนินงาน</p>
 </div>
 
 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
-
-    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-        <div class="flex justify-between items-start">
-            <div class="w-10 h-10 rounded-full bg-teal-50 text-teal-600 flex items-center justify-center"><i class="fas fa-door-closed"></i></div>
-            <span class="text-[10px] font-bold text-gray-500 bg-gray-50 px-2 py-1 rounded tracking-wider">ROOMS</span>
+    
+    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 relative overflow-hidden">
+        <div class="flex justify-between items-start mb-4">
+            <div class="bg-teal-50 text-teal-600 p-3 rounded-xl">
+                <i class="fas fa-building text-xl"></i>
+            </div>
+            <span class="bg-gray-100 text-gray-500 text-xs font-semibold px-2 py-1 rounded-md uppercase">Rooms</span>
         </div>
-        <h3 class="text-3xl font-bold text-gray-800 mt-4">{{ total_rooms }} <span class="text-base font-normal text-gray-500">ห้อง</span></h3>
-        <p class="text-xs text-gray-500 mt-2">ว่าง {{ available_rooms }} • <span class="text-teal-600 font-semibold">มีผู้เช่า {{ occupied_rooms }}</span> • <span class="text-red-500">ซ่อม {{ maintenance_rooms }}</span></p>
+        <div>
+            <p class="text-sm text-gray-500 mb-1">ห้องพักทั้งหมด</p>
+            <h3 class="text-3xl font-bold text-gray-800">120 <span class="text-base font-normal text-gray-500">ห้อง</span></h3>
+        </div>
+        <div class="mt-4 text-xs flex items-center space-x-2">
+            <span class="text-gray-400">ว่าง 20</span>
+            <span class="text-gray-300">•</span>
+            <span class="text-teal-600 font-medium">มีผู้เช่า 95</span>
+            <span class="text-gray-300">•</span>
+            <span class="text-red-500">ซ่อม 5</span>
+        </div>
     </div>
 
     <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-        <div class="flex justify-between items-start">
-            <div class="w-10 h-10 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center"><i class="fas fa-chart-line"></i></div>
-            <span class="text-[10px] font-bold text-gray-500 bg-gray-50 px-2 py-1 rounded tracking-wider">GROWTH</span>
+        <div class="flex justify-between items-start mb-4">
+            <div class="bg-blue-50 text-blue-600 p-3 rounded-xl">
+                <i class="fas fa-chart-line text-xl"></i>
+            </div>
+            <span class="bg-gray-100 text-gray-500 text-xs font-semibold px-2 py-1 rounded-md uppercase">Growth</span>
         </div>
-        <h3 class="text-3xl font-bold text-gray-800 mt-4">{{ occupancy_rate|floatformat:0 }}%</h3>
-        <p class="text-xs text-gray-500 mt-2">อัตราการเช่าเดือนนี้</p>
+        <div>
+            <p class="text-sm text-gray-500 mb-1">อัตราการเช่าเข้า</p>
+            <h3 class="text-3xl font-bold text-gray-800">85%</h3>
+        </div>
+        <div class="mt-4 w-full bg-gray-200 rounded-full h-1.5">
+            <div class="bg-teal-700 h-1.5 rounded-full" style="width: 85%"></div>
+        </div>
     </div>
 
     <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-        <div class="flex justify-between items-start">
-            <div class="w-10 h-10 rounded-full bg-green-50 text-green-500 flex items-center justify-center"><i class="fas fa-money-bill-wave"></i></div>
-            <span class="text-[10px] font-bold text-gray-500 bg-gray-50 px-2 py-1 rounded tracking-wider">REVENUE</span>
+        <div class="flex justify-between items-start mb-4">
+            <div class="bg-green-50 text-green-600 p-3 rounded-xl">
+                <i class="fas fa-money-bill-wave text-xl"></i>
+            </div>
+            <span class="bg-gray-100 text-gray-500 text-xs font-semibold px-2 py-1 rounded-md uppercase">Revenue</span>
         </div>
-        <h3 class="text-3xl font-bold text-gray-800 mt-4">฿{{ expected_revenue }}</h3>
-        <p class="text-xs text-gray-500 mt-2">รายได้คาดการณ์เดือนนี้</p>
+        <div>
+            <p class="text-sm text-gray-500 mb-1">รายได้เดือนนี้</p>
+            <h3 class="text-3xl font-bold text-gray-800">฿540,000</h3>
+        </div>
+        <div class="mt-4 text-xs text-gray-400">
+            รวมค่าเช่าและน้ำไฟ
+        </div>
     </div>
 
-    <div class="bg-white rounded-2xl p-6 shadow-sm border border-red-100 relative overflow-hidden">
-        <div class="absolute top-0 right-0 w-2 h-full bg-red-500"></div>
-        <div class="flex justify-between items-start">
-            <div class="w-10 h-10 rounded-full bg-red-50 text-red-500 flex items-center justify-center"><i class="fas fa-exclamation-circle"></i></div>
-            <span class="text-[10px] font-bold text-red-500 bg-red-50 px-2 py-1 rounded tracking-wider">OVERDUE</span>
+    <div class="bg-white rounded-2xl p-6 shadow-sm border border-red-100 relative">
+        <div class="absolute right-0 top-0 bottom-0 w-1 bg-red-400 rounded-r-2xl"></div>
+        
+        <div class="flex justify-between items-start mb-4">
+            <div class="bg-red-50 text-red-500 p-3 rounded-xl">
+                <i class="fas fa-exclamation-circle text-xl"></i>
+            </div>
+            <span class="bg-red-50 text-red-500 text-xs font-semibold px-2 py-1 rounded-md uppercase">Overdue</span>
         </div>
-        <h3 class="text-3xl font-bold text-red-500 mt-4">฿{{ overdue_amount }}</h3>
-        <p class="text-xs text-red-500 mt-2 font-medium"><i class="fas fa-user-clock mr-1"></i>มีค้างชำระ {{ overdue_count }} ราย</p>
+        <div>
+            <p class="text-sm text-gray-500 mb-1">ยอดค้างชำระ</p>
+            <h3 class="text-3xl font-bold text-red-500">฿15,000</h3>
+        </div>
+        <div class="mt-4 text-xs text-red-500 flex items-center">
+            <i class="fas fa-exclamation-triangle mr-1"></i> ต้องดำเนินการเร่งด่วน
+        </div>
     </div>
 
 </div>
-
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
-    
-    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 lg:col-span-2">
-        <h3 class="text-lg font-bold text-gray-800 mb-4">กราฟรายได้ย้อนหลัง 12 เดือน</h3>
-        <div class="flex items-center justify-center h-64 bg-gray-50 rounded-lg border border-dashed border-gray-200">
-            <p class="text-gray-400">เดี๋ยวเรามาทำกราฟแท่งตรงนี้กันครับ 📊</p>
-        </div>
-    </div>
-
-    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col items-center">
-        <h3 class="text-lg font-bold text-gray-800 mb-4 w-full text-left">สัดส่วนสถานะห้องพัก</h3>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8 mt-6">
         
-        <div class="relative w-full h-64 flex justify-center items-center">
-            <div class="absolute flex flex-col items-center justify-center pointer-events-none">
-                <span class="text-3xl font-bold text-gray-800">{{ total_rooms }}</span>
-                <span class="text-xs text-gray-400 font-medium uppercase">Total</span>
+        <div class="bg-white rounded-2xl p-6 shadow-sm lg:col-span-2">
+            <h3 class="text-lg font-bold text-teal-800 mb-6">กราฟรายได้ย้อนหลัง 12 เดือน</h3>
+            
+            <div class="h-56 flex items-end justify-between space-x-2">
+                <div class="w-full bg-teal-100 rounded-t-md h-[40%]"></div>
+                <div class="w-full bg-teal-100 rounded-t-md h-[55%]"></div>
+                <div class="w-full bg-teal-100 rounded-t-md h-[45%]"></div>
+                <div class="w-full bg-teal-100 rounded-t-md h-[60%]"></div>
+                <div class="w-full bg-teal-100 rounded-t-md h-[75%]"></div>
+                <div class="w-full bg-teal-100 rounded-t-md h-[65%]"></div>
+                <div class="w-full bg-teal-100 rounded-t-md h-[80%]"></div>
+                <div class="w-full bg-teal-100 rounded-t-md h-[85%]"></div>
+                <div class="w-full bg-teal-100 rounded-t-md h-[90%]"></div>
+                <div class="w-full bg-teal-100 rounded-t-md h-[95%]"></div>
+                <div class="w-full bg-teal-100 rounded-t-md h-[100%]"></div>
+                <div class="w-full bg-teal-800 rounded-t-md h-[95%] shadow-md"></div> 
             </div>
             
-            <canvas id="roomStatusChart"></canvas>
+            <div class="flex justify-between text-xs text-gray-400 mt-3 px-2 font-medium">
+                <span>ม.ค.</span><span>ก.พ.</span><span>มี.ค.</span><span>เม.ย.</span><span>พ.ค.</span><span>มิ.ย.</span><span>ก.ค.</span><span>ส.ค.</span><span>ก.ย.</span><span>ต.ค.</span><span>พ.ย.</span><span class="text-teal-800 font-bold">ธ.ค.</span>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl p-6 shadow-sm flex flex-col items-center justify-center relative">
+            <h3 class="text-lg font-bold text-teal-800 mb-6 w-full text-left">สัดส่วนสถานะห้องพัก</h3>
+            
+            <div class="relative w-40 h-40 flex items-center justify-center">
+                <div class="absolute inset-0 rounded-full border-[14px] border-teal-100"></div>
+                <div class="absolute inset-0 rounded-full border-[14px] border-teal-800" style="clip-path: polygon(0 0, 100% 0, 100% 100%, 0 50%);"></div>
+                <div class="absolute inset-0 rounded-full border-[14px] border-amber-700" style="clip-path: polygon(100% 50%, 100% 100%, 50% 100%, 50% 50%);"></div>
+                
+                <div class="text-center z-10 bg-white rounded-full w-24 h-24 flex flex-col items-center justify-center">
+                    <span class="text-2xl font-bold text-teal-800">120</span>
+                    <p class="text-[10px] text-gray-500 font-semibold tracking-wider">TOTAL</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-x-8 gap-y-3 mt-8 text-sm text-gray-600 font-medium">
+                <div class="flex items-center"><span class="w-3 h-3 rounded-full bg-teal-800 mr-2"></span>มีผู้เช่า</div>
+                <div class="flex items-center"><span class="w-3 h-3 rounded-full bg-teal-100 mr-2"></span>ว่าง</div>
+                <div class="flex items-center"><span class="w-3 h-3 rounded-full bg-black mr-2"></span>จองแล้ว</div>
+                <div class="flex items-center"><span class="w-3 h-3 rounded-full bg-amber-700 mr-2"></span>ซ่อมแซม</div>
+            </div>
+        </div>
+
+    </div>
+    <div class="bg-white rounded-2xl p-6 shadow-sm mb-8 mt-6">
+        
+        <div class="flex justify-between items-center mb-6">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded-full bg-teal-50 text-teal-700 flex items-center justify-center">
+                    <i class="fas fa-bell"></i>
+                </div>
+                <h3 class="text-lg font-bold text-teal-800">การแจ้งเตือนสำคัญ</h3>
+            </div>
+            <a href="#" class="text-sm font-semibold text-teal-600 hover:text-teal-800 transition-colors">
+                ดูทั้งหมด <i class="fas fa-chevron-right text-xs ml-1"></i>
+            </a>
+        </div>
+
+        <div class="space-y-3">
+            
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 hover:bg-gray-50 rounded-xl border border-gray-100 transition duration-200 cursor-pointer group">
+                <div class="flex items-center space-x-4 mb-3 sm:mb-0">
+                    <div class="w-10 h-10 rounded-full bg-orange-50 text-orange-500 flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-wrench"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-gray-800 font-bold text-sm group-hover:text-teal-700 transition-colors">ห้อง 402 แจ้งซ่อมน้ำรั่วซึม</h4>
+                        <p class="text-xs text-gray-500 mt-1">แจ้งเมื่อ 2 ชั่วโมงที่แล้ว • ผู้แจ้ง: คุณกนกกร</p>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between sm:justify-end w-full sm:w-auto space-x-4 pl-14 sm:pl-0">
+                    <span class="bg-orange-50 text-orange-600 px-3 py-1 rounded-full text-[11px] font-bold tracking-wide">รอดำเนินการ</span>
+                    <i class="fas fa-chevron-right text-gray-300 group-hover:text-teal-500 transition-colors"></i>
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 hover:bg-gray-50 rounded-xl border border-gray-100 transition duration-200 cursor-pointer group">
+                <div class="flex items-center space-x-4 mb-3 sm:mb-0">
+                    <div class="w-10 h-10 rounded-full bg-teal-50 text-teal-600 flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-file-signature"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-gray-800 font-bold text-sm group-hover:text-teal-700 transition-colors">ห้อง 305 สัญญาใกล้หมดอายุ</h4>
+                        <p class="text-xs text-gray-500 mt-1">จะหมดอายุในอีก 15 วัน • ผู้เช่า: บจก. พลังงานบวก</p>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between sm:justify-end w-full sm:w-auto space-x-4 pl-14 sm:pl-0">
+                    <span class="bg-teal-50 text-teal-700 px-3 py-1 rounded-full text-[11px] font-bold tracking-wide">ต้องต่อสัญญา</span>
+                    <i class="fas fa-chevron-right text-gray-300 group-hover:text-teal-500 transition-colors"></i>
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 hover:bg-gray-50 rounded-xl border border-gray-100 transition duration-200 cursor-pointer group">
+                <div class="flex items-center space-x-4 mb-3 sm:mb-0">
+                    <div class="w-10 h-10 rounded-full bg-red-50 text-red-500 flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-gray-800 font-bold text-sm group-hover:text-teal-700 transition-colors">ห้อง 201 ค้างชำระค่าเช่า (เกิน 5 วัน)</h4>
+                        <p class="text-xs text-gray-500 mt-1">ยอดค้างชำระ: ฿8,500 • ผู้เช่า: คุณสมรักษ์</p>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between sm:justify-end w-full sm:w-auto space-x-4 pl-14 sm:pl-0">
+                    <span class="bg-red-50 text-red-500 px-3 py-1 rounded-full text-[11px] font-bold tracking-wide">ค้างชำระ</span>
+                    <i class="fas fa-chevron-right text-gray-300 group-hover:text-teal-500 transition-colors"></i>
+                </div>
+            </div>
+
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<script>
-    // 1. ดึงพื้นที่วาดกราฟ (Canvas) ที่เราเตรียมไว้ใน Step 1
-    const ctx = document.getElementById('roomStatusChart').getContext('2d');
-    
-    // 2. สั่ง Chart.js ให้วาดรูป
-    const roomStatusChart = new Chart(ctx, {
-        type: 'doughnut', // บอกว่าจะเอากราฟโดนัท
-        data: {
-            // ชื่อป้ายกำกับ
-            labels: ['มีผู้เช่า', 'ว่าง', 'ซ่อมแซม'], 
-            datasets: [{
-                // 💥 ไฮไลต์สำคัญ: ดึงตัวเลขจาก Django (views.py) มายัดใส่กราฟตรงนี้เลย!
-                data: [
-                    {{ occupied_rooms|default:0 }},   // จำนวนห้องที่มีคนอยู่
-                    {{ available_rooms|default:0 }},  // จำนวนห้องว่าง
-                    {{ maintenance_rooms|default:0 }} // จำนวนห้องซ่อม
-                ],
-                // ตั้งค่าสีให้ตรงกับ Figma (เขียวเข้ม, ฟ้าอ่อน, แดง)
-                backgroundColor: [
-                    '#064e3b', // สีเขียวเข้ม (มีผู้เช่า)
-                    '#ccfbf1', // สีฟ้าอ่อน (ว่าง)
-                    '#9a3412', // สีน้ำตาลอมส้ม (ซ่อมแซม)
-                ],
-                borderWidth: 0, // ไม่เอาเส้นขอบ
-                hoverOffset: 4  // เวลามือถือไปชี้ให้กราฟเด้งออกมานิดนึง
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            cutout: '75%', // ควบคุมความกว้างของรูโดนัท (75% คือรูกว้างๆ แบบ Figma)
-            plugins: {
-                legend: {
-                    position: 'bottom', // เอาจุดสีบอกสถานะไว้ด้านล่าง
-                    labels: {
-                        usePointStyle: true, // เปลี่ยนสี่เหลี่ยมเป็นจุดกลมๆ
-                        padding: 20
-                    }
-                }
-            }
-        }
-    });
-</script>
-</div>
 {% endblock %}
