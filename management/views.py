@@ -34,3 +34,5 @@ def maintenance(request):
     return render(request, 'maintenance.html')
 def settings_view(request):
     return render(request, 'settings.html')
+def login_view(request):
+    return render(request, 'login.html')
