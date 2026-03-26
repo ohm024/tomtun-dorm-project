@@ -23,11 +23,13 @@
                 <p class="text-xs text-gray-500 mt-1">MANAGEMENT PORTAL</p>
             </div>
             <nav class="px-4 space-y-1">
-                <a href="#" class="sidebar-link active"><i class="fas fa-th-large w-6"></i> แดชบอร์ด</a>
-                <a href="#" class="sidebar-link"><i class="fas fa-door-open w-6"></i> จัดการห้องพัก</a>
-                <a href="#" class="sidebar-link"><i class="fas fa-file-contract w-6"></i> การจองและสัญญา</a>
-                <a href="#" class="sidebar-link"><i class="fas fa-sign-in-alt w-6"></i> เช็คอิน/เช็คเอาท์</a>
-                <a href="#" class="sidebar-link"><i class="fas fa-users w-6"></i> จัดการผู้เช่า</a>
+                <a href="{% url 'dashboard' %}" class="sidebar-link"><i class="fas fa-th-large w-6"></i> แดชบอร์ด</a>
+                <a href="{% url 'rooms' %}" class="sidebar-link"><i class="fas fa-door-open w-6"></i> จัดการห้องพัก</a>
+                <a href="{% url 'contracts' %}" class="sidebar-link"><i class="fas fa-file-contract w-6"></i> การจองและสัญญา</a>
+                <a href="{% url 'check_in_out' %}" class="sidebar-link"><i class="fas fa-sign-in-alt w-6"></i> เช็คอิน/เช็คเอาท์</a>
+                
+                <a href="{% url 'tenants' %}" class="sidebar-link"><i class="fas fa-users w-6"></i> จัดการผู้เช่า</a>
+                
                 <a href="#" class="sidebar-link"><i class="fas fa-file-invoice-dollar w-6"></i> บิลค่าเช่า</a>
                 <a href="#" class="sidebar-link"><i class="fas fa-wrench w-6"></i> แจ้งซ่อม</a>
             </nav>
