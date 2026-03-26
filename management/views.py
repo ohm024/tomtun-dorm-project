@@ -44,3 +44,5 @@ def add_contract(request):
     return render(request, 'add_contract.html')
 def add_bill(request):
     return render(request, 'add_bill.html')
+def add_maintenance(request):
+    return render(request, 'add_maintenance.html')
