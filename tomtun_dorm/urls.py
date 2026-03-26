@@ -19,5 +19,6 @@ urlpatterns = [
     path('settings/', views.settings_view, name='settings'),
     path('login/', views.login_view, name='login'),
     path('tenants/add/', views.add_tenant, name='add_tenant'),
-    path('rooms/add/', views.add_room, name='add_room'),      
+    path('rooms/add/', views.add_room, name='add_room'), 
+    path('contracts/add/', views.add_contract, name='add_contract'),     
 ]
