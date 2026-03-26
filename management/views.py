@@ -38,3 +38,5 @@ def login_view(request):
     return render(request, 'login.html')
 def add_tenant(request):
     return render(request, 'add_tenant.html')
+def add_room(request):
+    return render(request, 'add_room.html')
