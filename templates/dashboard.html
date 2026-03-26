@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
-
-{% block content %}
+{% load humanize %} {% block content %}
 <div class="mb-8">
     <h2 class="text-2xl font-bold text-gray-800">แดชบอร์ด</h2>
     <p class="text-gray-500 text-sm mt-1">ภาพรวมระบบและสรุปผลการดำเนินงาน</p>
@@ -17,14 +16,14 @@
         </div>
         <div>
             <p class="text-sm text-gray-500 mb-1">ห้องพักทั้งหมด</p>
-            <h3 class="text-3xl font-bold text-gray-800">120 <span class="text-base font-normal text-gray-500">ห้อง</span></h3>
+            <h3 class="text-3xl font-bold text-gray-800">{{ total_rooms|default:0 }} <span class="text-base font-normal text-gray-500">ห้อง</span></h3>
         </div>
         <div class="mt-4 text-xs flex items-center space-x-2">
-            <span class="text-gray-400">ว่าง 20</span>
+            <span class="text-gray-400">ว่าง {{ available_rooms|default:0 }}</span>
             <span class="text-gray-300">•</span>
-            <span class="text-teal-600 font-medium">มีผู้เช่า 95</span>
+            <span class="text-teal-600 font-medium">มีผู้เช่า {{ occupied_rooms|default:0 }}</span>
             <span class="text-gray-300">•</span>
-            <span class="text-red-500">ซ่อม 5</span>
+            <span class="text-red-500">ซ่อม {{ maintenance_rooms|default:0 }}</span>
         </div>
     </div>
 
@@ -37,10 +36,10 @@
         </div>
         <div>
             <p class="text-sm text-gray-500 mb-1">อัตราการเช่าเข้า</p>
-            <h3 class="text-3xl font-bold text-gray-800">85%</h3>
+            <h3 class="text-3xl font-bold text-gray-800">{{ occupancy_rate|floatformat:0 }}%</h3>
         </div>
         <div class="mt-4 w-full bg-gray-200 rounded-full h-1.5">
-            <div class="bg-teal-700 h-1.5 rounded-full" style="width: 85%"></div>
+            <div class="bg-teal-700 h-1.5 rounded-full" style="width: {{ occupancy_rate|floatformat:0 }}%"></div>
         </div>
     </div>
 
@@ -52,8 +51,8 @@
             <span class="bg-gray-100 text-gray-500 text-xs font-semibold px-2 py-1 rounded-md uppercase">Revenue</span>
         </div>
         <div>
-            <p class="text-sm text-gray-500 mb-1">รายได้เดือนนี้</p>
-            <h3 class="text-3xl font-bold text-gray-800">฿540,000</h3>
+            <p class="text-sm text-gray-500 mb-1">รายได้รอรับ/รับแล้ว</p>
+            <h3 class="text-3xl font-bold text-gray-800">฿{{ expected_revenue|intcomma }}</h3>
         </div>
         <div class="mt-4 text-xs text-gray-400">
             รวมค่าเช่าและน้ำไฟ
@@ -62,7 +61,6 @@
 
     <div class="bg-white rounded-2xl p-6 shadow-sm border border-red-100 relative">
         <div class="absolute right-0 top-0 bottom-0 w-1 bg-red-400 rounded-r-2xl"></div>
-        
         <div class="flex justify-between items-start mb-4">
             <div class="bg-red-50 text-red-500 p-3 rounded-xl">
                 <i class="fas fa-exclamation-circle text-xl"></i>
@@ -71,272 +69,152 @@
         </div>
         <div>
             <p class="text-sm text-gray-500 mb-1">ยอดค้างชำระ</p>
-            <h3 class="text-3xl font-bold text-red-500">฿15,000</h3>
+            <h3 class="text-3xl font-bold text-red-500">฿{{ overdue_amount|intcomma }}</h3>
         </div>
         <div class="mt-4 text-xs text-red-500 flex items-center">
-            <i class="fas fa-exclamation-triangle mr-1"></i> ต้องดำเนินการเร่งด่วน
+            <i class="fas fa-exclamation-triangle mr-1"></i> มีค้างชำระ {{ overdue_count }} บิล
         </div>
     </div>
 
 </div>
-<<<<<<< HEAD
 
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
     
-    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 lg:col-span-2">
-        <h3 class="text-lg font-bold text-gray-800 mb-4">กราฟรายได้ย้อนหลัง 12 เดือน</h3>
-        <div class="h-64 relative"> <canvas id="revenueBarChart"></canvas>
+    <div class="bg-white rounded-2xl p-6 shadow-sm lg:col-span-2">
+        <h3 class="text-lg font-bold text-teal-800 mb-6">กราฟรายได้ย้อนหลัง 12 เดือน</h3>
+        <div class="h-64 relative w-full"> 
+            <canvas id="revenueBarChart"></canvas>
         </div>
     </div>
 
-    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col items-center">
-        <h3 class="text-lg font-bold text-gray-800 mb-4 w-full text-left">สัดส่วนสถานะห้องพัก</h3>
-=======
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8 mt-6">
->>>>>>> 88847b1de0cbde25feb8e26b38e528425b2d8e58
-        
-        <div class="bg-white rounded-2xl p-6 shadow-sm lg:col-span-2">
-            <h3 class="text-lg font-bold text-teal-800 mb-6">กราฟรายได้ย้อนหลัง 12 เดือน</h3>
-            
-            <div class="h-56 flex items-end justify-between space-x-2">
-                <div class="w-full bg-teal-100 rounded-t-md h-[40%]"></div>
-                <div class="w-full bg-teal-100 rounded-t-md h-[55%]"></div>
-                <div class="w-full bg-teal-100 rounded-t-md h-[45%]"></div>
-                <div class="w-full bg-teal-100 rounded-t-md h-[60%]"></div>
-                <div class="w-full bg-teal-100 rounded-t-md h-[75%]"></div>
-                <div class="w-full bg-teal-100 rounded-t-md h-[65%]"></div>
-                <div class="w-full bg-teal-100 rounded-t-md h-[80%]"></div>
-                <div class="w-full bg-teal-100 rounded-t-md h-[85%]"></div>
-                <div class="w-full bg-teal-100 rounded-t-md h-[90%]"></div>
-                <div class="w-full bg-teal-100 rounded-t-md h-[95%]"></div>
-                <div class="w-full bg-teal-100 rounded-t-md h-[100%]"></div>
-                <div class="w-full bg-teal-800 rounded-t-md h-[95%] shadow-md"></div> 
-            </div>
-            
-            <div class="flex justify-between text-xs text-gray-400 mt-3 px-2 font-medium">
-                <span>ม.ค.</span><span>ก.พ.</span><span>มี.ค.</span><span>เม.ย.</span><span>พ.ค.</span><span>มิ.ย.</span><span>ก.ค.</span><span>ส.ค.</span><span>ก.ย.</span><span>ต.ค.</span><span>พ.ย.</span><span class="text-teal-800 font-bold">ธ.ค.</span>
+    <div class="bg-white rounded-2xl p-6 shadow-sm flex flex-col items-center justify-center relative">
+        <h3 class="text-lg font-bold text-teal-800 mb-6 w-full text-left">สัดส่วนสถานะห้องพัก</h3>
+        <div class="relative w-48 h-48 flex items-center justify-center">
+            <canvas id="roomStatusChart"></canvas>
+            <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                <span class="text-3xl font-bold text-teal-800">{{ total_rooms }}</span>
+                <p class="text-[10px] text-gray-500 font-semibold tracking-wider">TOTAL</p>
             </div>
         </div>
 
-        <div class="bg-white rounded-2xl p-6 shadow-sm flex flex-col items-center justify-center relative">
-            <h3 class="text-lg font-bold text-teal-800 mb-6 w-full text-left">สัดส่วนสถานะห้องพัก</h3>
-            
-            <div class="relative w-40 h-40 flex items-center justify-center">
-                <div class="absolute inset-0 rounded-full border-[14px] border-teal-100"></div>
-                <div class="absolute inset-0 rounded-full border-[14px] border-teal-800" style="clip-path: polygon(0 0, 100% 0, 100% 100%, 0 50%);"></div>
-                <div class="absolute inset-0 rounded-full border-[14px] border-amber-700" style="clip-path: polygon(100% 50%, 100% 100%, 50% 100%, 50% 50%);"></div>
-                
-                <div class="text-center z-10 bg-white rounded-full w-24 h-24 flex flex-col items-center justify-center">
-                    <span class="text-2xl font-bold text-teal-800">120</span>
-                    <p class="text-[10px] text-gray-500 font-semibold tracking-wider">TOTAL</p>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-2 gap-x-8 gap-y-3 mt-8 text-sm text-gray-600 font-medium">
-                <div class="flex items-center"><span class="w-3 h-3 rounded-full bg-teal-800 mr-2"></span>มีผู้เช่า</div>
-                <div class="flex items-center"><span class="w-3 h-3 rounded-full bg-teal-100 mr-2"></span>ว่าง</div>
-                <div class="flex items-center"><span class="w-3 h-3 rounded-full bg-black mr-2"></span>จองแล้ว</div>
-                <div class="flex items-center"><span class="w-3 h-3 rounded-full bg-amber-700 mr-2"></span>ซ่อมแซม</div>
-            </div>
-        </div>
-
-    </div>
-    <div class="bg-white rounded-2xl p-6 shadow-sm mb-8 mt-6">
-        
-        <div class="flex justify-between items-center mb-6">
-            <div class="flex items-center space-x-3">
-                <div class="w-8 h-8 rounded-full bg-teal-50 text-teal-700 flex items-center justify-center">
-                    <i class="fas fa-bell"></i>
-                </div>
-                <h3 class="text-lg font-bold text-teal-800">การแจ้งเตือนสำคัญ</h3>
-            </div>
-            <a href="#" class="text-sm font-semibold text-teal-600 hover:text-teal-800 transition-colors">
-                ดูทั้งหมด <i class="fas fa-chevron-right text-xs ml-1"></i>
-            </a>
-        </div>
-
-        <div class="space-y-3">
-            
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 hover:bg-gray-50 rounded-xl border border-gray-100 transition duration-200 cursor-pointer group">
-                <div class="flex items-center space-x-4 mb-3 sm:mb-0">
-                    <div class="w-10 h-10 rounded-full bg-orange-50 text-orange-500 flex items-center justify-center flex-shrink-0">
-                        <i class="fas fa-wrench"></i>
-                    </div>
-                    <div>
-                        <h4 class="text-gray-800 font-bold text-sm group-hover:text-teal-700 transition-colors">ห้อง 402 แจ้งซ่อมน้ำรั่วซึม</h4>
-                        <p class="text-xs text-gray-500 mt-1">แจ้งเมื่อ 2 ชั่วโมงที่แล้ว • ผู้แจ้ง: คุณกนกกร</p>
-                    </div>
-                </div>
-                <div class="flex items-center justify-between sm:justify-end w-full sm:w-auto space-x-4 pl-14 sm:pl-0">
-                    <span class="bg-orange-50 text-orange-600 px-3 py-1 rounded-full text-[11px] font-bold tracking-wide">รอดำเนินการ</span>
-                    <i class="fas fa-chevron-right text-gray-300 group-hover:text-teal-500 transition-colors"></i>
-                </div>
-            </div>
-
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 hover:bg-gray-50 rounded-xl border border-gray-100 transition duration-200 cursor-pointer group">
-                <div class="flex items-center space-x-4 mb-3 sm:mb-0">
-                    <div class="w-10 h-10 rounded-full bg-teal-50 text-teal-600 flex items-center justify-center flex-shrink-0">
-                        <i class="fas fa-file-signature"></i>
-                    </div>
-                    <div>
-                        <h4 class="text-gray-800 font-bold text-sm group-hover:text-teal-700 transition-colors">ห้อง 305 สัญญาใกล้หมดอายุ</h4>
-                        <p class="text-xs text-gray-500 mt-1">จะหมดอายุในอีก 15 วัน • ผู้เช่า: บจก. พลังงานบวก</p>
-                    </div>
-                </div>
-                <div class="flex items-center justify-between sm:justify-end w-full sm:w-auto space-x-4 pl-14 sm:pl-0">
-                    <span class="bg-teal-50 text-teal-700 px-3 py-1 rounded-full text-[11px] font-bold tracking-wide">ต้องต่อสัญญา</span>
-                    <i class="fas fa-chevron-right text-gray-300 group-hover:text-teal-500 transition-colors"></i>
-                </div>
-            </div>
-
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 hover:bg-gray-50 rounded-xl border border-gray-100 transition duration-200 cursor-pointer group">
-                <div class="flex items-center space-x-4 mb-3 sm:mb-0">
-                    <div class="w-10 h-10 rounded-full bg-red-50 text-red-500 flex items-center justify-center flex-shrink-0">
-                        <i class="fas fa-exclamation-triangle"></i>
-                    </div>
-                    <div>
-                        <h4 class="text-gray-800 font-bold text-sm group-hover:text-teal-700 transition-colors">ห้อง 201 ค้างชำระค่าเช่า (เกิน 5 วัน)</h4>
-                        <p class="text-xs text-gray-500 mt-1">ยอดค้างชำระ: ฿8,500 • ผู้เช่า: คุณสมรักษ์</p>
-                    </div>
-                </div>
-                <div class="flex items-center justify-between sm:justify-end w-full sm:w-auto space-x-4 pl-14 sm:pl-0">
-                    <span class="bg-red-50 text-red-500 px-3 py-1 rounded-full text-[11px] font-bold tracking-wide">ค้างชำระ</span>
-                    <i class="fas fa-chevron-right text-gray-300 group-hover:text-teal-500 transition-colors"></i>
-                </div>
-            </div>
-
+        <div class="grid grid-cols-2 gap-x-8 gap-y-3 mt-8 text-sm text-gray-600 font-medium w-full">
+            <div class="flex items-center"><span class="w-3 h-3 rounded-full bg-[#064e3b] mr-2"></span>มีผู้เช่า</div>
+            <div class="flex items-center"><span class="w-3 h-3 rounded-full bg-[#ccfbf1] mr-2"></span>ว่าง</div>
+            <div class="flex items-center"><span class="w-3 h-3 rounded-full bg-[#9a3412] mr-2"></span>ซ่อมแซม</div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mt-8 mb-8 col-span-full w-full">
-    <div class="flex justify-between items-center mb-4">
-        <h3 class="text-lg font-bold text-gray-800 flex items-center gap-2">
-            <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"></path></svg>
-            การแจ้งเตือนสำคัญ
-        </h3>
-        <a href="#" class="text-sm font-medium text-teal-600 hover:text-teal-800">ดูทั้งหมด</a>
+</div>
+
+<div class="bg-white rounded-2xl p-6 shadow-sm mb-8 mt-6">
+    <div class="flex justify-between items-center mb-6">
+        <div class="flex items-center space-x-3">
+            <div class="w-8 h-8 rounded-full bg-teal-50 text-teal-700 flex items-center justify-center">
+                <i class="fas fa-bell"></i>
+            </div>
+            <h3 class="text-lg font-bold text-teal-800">การแจ้งเตือนสำคัญ</h3>
+        </div>
+        <a href="#" class="text-sm font-semibold text-teal-600 hover:text-teal-800 transition-colors">
+            ดูทั้งหมด <i class="fas fa-chevron-right text-xs ml-1"></i>
+        </a>
     </div>
 
-    <div class="flex flex-col gap-3">
-        
+    <div class="space-y-3">
         {% for req in recent_maintenances %}
-        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-100 hover:bg-gray-100 transition-colors cursor-pointer">
-            <div class="flex items-center gap-4">
-                <div class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-500 shrink-0">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 hover:bg-gray-50 rounded-xl border border-gray-100 transition duration-200 cursor-pointer group">
+            <div class="flex items-center space-x-4 mb-3 sm:mb-0">
+                <div class="w-10 h-10 rounded-full bg-orange-50 text-orange-500 flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-wrench"></i>
                 </div>
                 <div>
-                    <p class="font-bold text-gray-800">ห้อง {{ req.room.room_number }} {{ req.title }}</p>
-                    <p class="text-xs text-gray-500">แจ้งเมื่อ: {{ req.created_at|date:"d M Y" }} • รายละเอียด: {{ req.description|truncatechars:30 }}</p>
+                    <h4 class="text-gray-800 font-bold text-sm group-hover:text-teal-700 transition-colors">ห้อง {{ req.room.room_number }} {{ req.title }}</h4>
+                    <p class="text-xs text-gray-500 mt-1">แจ้งเมื่อ {{ req.created_at|date:"d M Y" }} • รายละเอียด: {{ req.description|truncatechars:30 }}</p>
                 </div>
             </div>
-            <span class="px-3 py-1 text-xs font-semibold text-orange-700 bg-orange-100 rounded-full border border-orange-200">
-                {{ req.get_status_display }}
-            </span>
+            <div class="flex items-center justify-between sm:justify-end w-full sm:w-auto space-x-4 pl-14 sm:pl-0">
+                <span class="bg-orange-50 text-orange-600 px-3 py-1 rounded-full text-[11px] font-bold tracking-wide">{{ req.get_status_display }}</span>
+                <i class="fas fa-chevron-right text-gray-300 group-hover:text-teal-500 transition-colors"></i>
+            </div>
         </div>
+        {% empty %}
+        <p class="text-sm text-gray-500 text-center py-4">ไม่มีรายการแจ้งซ่อม</p>
         {% endfor %}
 
         {% for inv in overdue_invoices_list %}
-        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-100 hover:bg-gray-100 transition-colors cursor-pointer">
-            <div class="flex items-center gap-4">
-                <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-red-500 shrink-0">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 hover:bg-gray-50 rounded-xl border border-gray-100 transition duration-200 cursor-pointer group">
+            <div class="flex items-center space-x-4 mb-3 sm:mb-0">
+                <div class="w-10 h-10 rounded-full bg-red-50 text-red-500 flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-exclamation-triangle"></i>
                 </div>
                 <div>
-                    <p class="font-bold text-gray-800">ห้อง {{ inv.room.room_number }} ค้างชำระค่าเช่า ({{ inv.month }})</p>
-                    <p class="text-xs text-gray-500">ยอดค้างชำระ: ฿{{ inv.amount }} • ผู้เช่า: {{ inv.tenant.first_name }} {{ inv.tenant.last_name }}</p>
+                    <h4 class="text-gray-800 font-bold text-sm group-hover:text-teal-700 transition-colors">ห้อง {{ inv.room.room_number }} ค้างชำระค่าเช่า</h4>
+                    <p class="text-xs text-gray-500 mt-1">ยอดค้างชำระ: ฿{{ inv.amount|intcomma }} • ผู้เช่า: {{ inv.tenant.first_name }}</p>
                 </div>
             </div>
-            <span class="px-3 py-1 text-xs font-semibold text-red-700 bg-red-100 rounded-full border border-red-200">
-                ค้างชำระ
-            </span>
+            <div class="flex items-center justify-between sm:justify-end w-full sm:w-auto space-x-4 pl-14 sm:pl-0">
+                <span class="bg-red-50 text-red-500 px-3 py-1 rounded-full text-[11px] font-bold tracking-wide">ค้างชำระ</span>
+                <i class="fas fa-chevron-right text-gray-300 group-hover:text-teal-500 transition-colors"></i>
+            </div>
         </div>
         {% endfor %}
-
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    // 1. ดึงพื้นที่วาดกราฟ (Canvas) ที่เราเตรียมไว้ใน Step 1
+    // กราฟโดนัท (ห้องพัก)
     const ctx = document.getElementById('roomStatusChart').getContext('2d');
-    
-    // 2. สั่ง Chart.js ให้วาดรูป
     const roomStatusChart = new Chart(ctx, {
-        type: 'doughnut', // บอกว่าจะเอากราฟโดนัท
+        type: 'doughnut',
         data: {
-            // ชื่อป้ายกำกับ
             labels: ['มีผู้เช่า', 'ว่าง', 'ซ่อมแซม'], 
             datasets: [{
-                // 💥 ไฮไลต์สำคัญ: ดึงตัวเลขจาก Django (views.py) มายัดใส่กราฟตรงนี้เลย!
                 data: [
-                    {{ occupied_rooms|default:0 }},   // จำนวนห้องที่มีคนอยู่
-                    {{ available_rooms|default:0 }},  // จำนวนห้องว่าง
-                    {{ maintenance_rooms|default:0 }} // จำนวนห้องซ่อม
+                    {{ occupied_rooms|default:0 }},
+                    {{ available_rooms|default:0 }},
+                    {{ maintenance_rooms|default:0 }}
                 ],
-                // ตั้งค่าสีให้ตรงกับ Figma (เขียวเข้ม, ฟ้าอ่อน, แดง)
-                backgroundColor: [
-                    '#064e3b', // สีเขียวเข้ม (มีผู้เช่า)
-                    '#ccfbf1', // สีฟ้าอ่อน (ว่าง)
-                    '#9a3412', // สีน้ำตาลอมส้ม (ซ่อมแซม)
-                ],
-                borderWidth: 0, // ไม่เอาเส้นขอบ
-                hoverOffset: 4  // เวลามือถือไปชี้ให้กราฟเด้งออกมานิดนึง
+                backgroundColor: ['#064e3b', '#ccfbf1', '#9a3412'],
+                borderWidth: 0,
+                hoverOffset: 4
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            cutout: '75%', // ควบคุมความกว้างของรูโดนัท (75% คือรูกว้างๆ แบบ Figma)
+            cutout: '80%', 
             plugins: {
-                legend: {
-                    position: 'bottom', // เอาจุดสีบอกสถานะไว้ด้านล่าง
-                    labels: {
-                        usePointStyle: true, // เปลี่ยนสี่เหลี่ยมเป็นจุดกลมๆ
-                        padding: 20
-                    }
-                }
+                legend: { display: false } // ซ่อนจุด Legend เดิม เพราะเราใช้ HTML ทำขึ้นมาใหม่แล้ว
             }
         }
     });
-</script>
-<script>
-    // 1. ดึงพื้นที่วาดกราฟแท่ง (Canvas)
+
+    // กราฟแท่ง (รายได้)
     const ctxBar = document.getElementById('revenueBarChart').getContext('2d');
-    
-    // 2. สั่ง Chart.js วาดกราฟแท่ง (Bar Chart)
     const revenueBarChart = new Chart(ctxBar, {
-        type: 'bar', // บอกว่าเอากราฟแท่ง
+        type: 'bar',
         data: {
-            // 💥 ดึงตัวแปรป้ายเดือนภาษาไทยจาก Python ยัดใส่ตรงนี้ ["ม.ค.", "ก.พ.", ...]
             labels: {{ bar_chart_labels|safe }}, 
             datasets: [{
                 label: 'รายได้ (฿)',
-                // 💥 ดึงตัวเลขรายใด้จริงจาก Python ยัดใส่ตรงนี้ [0, 4500, 0, ...]
                 data: {{ bar_chart_data|safe }}, 
-                backgroundColor: '#ccfbf1', // สีฟ้าอ่อน base color แบบ Figma
-                hoverBackgroundColor: '#064e3b', // สีเขียวเข้มตอนมือชี้ แบบ Figma
-                borderRadius: 10, // ทำให้แท่งกราฟด้านบนมีขอบมนแบบ Figma
-                borderSkipped: false, // จำเป็นต้องมีเพื่อให้ขอบมนแสดงผลถูกต้องที่ด้านบน
+                backgroundColor: '#ccfbf1',
+                hoverBackgroundColor: '#064e3b',
+                borderRadius: 10,
+                borderSkipped: false,
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
-                legend: {
-                    display: false // ซ่อนตำนาน (Legend) ด้านบนเพื่อให้คลีนเหมือนแบบ Figma
-                },
+                legend: { display: false },
                 tooltip: {
-                    // ปรับรูปแบบ Tooltip ตอนมือชี้ให้มี฿
                     callbacks: {
                         label: function(context) {
                             let label = context.dataset.label || '';
-                            if (label) {
-                                label += ': ';
-                            }
+                            if (label) label += ': ';
                             if (context.parsed.y !== null) {
-                                // จัดรูปแบบเงินบาทไทย
                                 label += new Intl.NumberFormat('th-TH', { style: 'currency', currency: 'THB', minimumFractionDigits: 0 }).format(context.parsed.y);
                             }
                             return label;
@@ -346,36 +224,20 @@
             },
             scales: {
                 x: {
-                    grid: {
-                        display: false, // ปิดเส้นตารางแนวตั้งแบบ Figma
-                    },
-                    ticks: {
-                        color: '#9ca3af', // สีตัวหนังสือป้ายเดือนเป็นสีเทา
-                        font: {
-                            size: 10
-                        }
-                    }
+                    grid: { display: false },
+                    ticks: { color: '#9ca3af', font: { size: 10 } }
                 },
                 y: {
-                    beginAtZero: true, // กราฟเริ่มจากศูนย์เสมอ
-                    grid: {
-                        color: '#f3f4f6', // เส้นตารางแนวนอนจางๆ แบบ Figma
-                    },
+                    beginAtZero: true,
+                    grid: { color: '#f3f4f6' },
                     ticks: {
-                        color: '#9ca3af', // สีตัวหนังสือตัวเลขเป็นสีเทา
-                        // เติม ฿ หน้าตัวเลขแนวตั้ง
-                        callback: function(value, index, ticks) {
-                            return '฿' + value.toLocaleString();
-                        },
-                        font: {
-                            size: 10
-                        }
+                        color: '#9ca3af',
+                        callback: function(value) { return '฿' + value.toLocaleString(); },
+                        font: { size: 10 }
                     }
                 }
             }
         }
     });
 </script>
-</div>
-{% endblock %}
 {% endblock %}
