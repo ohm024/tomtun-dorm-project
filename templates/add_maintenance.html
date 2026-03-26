@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="mb-6">
+    <a href="{% url 'maintenance' %}" class="text-teal-600 hover:text-teal-700 text-sm mb-2 inline-block font-medium">
+        <i class="fas fa-arrow-left mr-1"></i> กลับไปหน้าระบบแจ้งซ่อม
+    </a>
+    <h2 class="text-2xl font-bold text-gray-800">สร้างรายการแจ้งซ่อม</h2>
+    <p class="text-gray-500 text-sm mt-1">บันทึกรายละเอียดปัญหาที่ต้องการให้ช่างเข้าตรวจสอบแก้ไข</p>
+</div>
+
+<div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm max-w-3xl">
+    <form action="{% url 'maintenance' %}" method="GET" class="space-y-6">
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="md:col-span-2 border-b border-gray-100 pb-2">
+                <h3 class="text-lg font-bold text-gray-800"><i class="fas fa-tools text-teal-600 mr-2"></i>รายละเอียดปัญหา</h3>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">ห้องพัก <span class="text-red-500">*</span></label>
+                <select class="w-full text-sm border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 px-4 py-2.5 border bg-white" required>
+                    <option value="">-- เลือกห้องพัก --</option>
+                    <option value="101">101</option>
+                    <option value="102">102</option>
+                    <option value="201">201</option>
+                    <option value="305">305</option>
+                    <option value="common_area">พื้นที่ส่วนกลาง</option>
+                </select>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">ความเร่งด่วน <span class="text-red-500">*</span></label>
+                <select class="w-full text-sm border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 px-4 py-2.5 border bg-white" required>
+                    <option value="normal">ปกติ (ดำเนินการภายใน 1-3 วัน)</option>
+                    <option value="high">ด่วน (ดำเนินการภายใน 24 ชม.)</option>
+                    <option value="urgent">ด่วนมาก (ดำเนินการทันที)</option>
+                </select>
+            </div>
+
+            <div class="md:col-span-2">
+                <label class="block text-sm font-bold text-gray-700 mb-1">หัวข้อปัญหา <span class="text-red-500">*</span></label>
+                <input type="text" class="w-full text-sm border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 px-4 py-2.5 border bg-gray-50" placeholder="เช่น แอร์น้ำหยด, หลอดไฟขาด, ชักโครกกดไม่ลง" required>
+            </div>
+
+            <div class="md:col-span-2">
+                <label class="block text-sm font-bold text-gray-700 mb-1">รายละเอียดเพิ่มเติม</label>
+                <textarea class="w-full text-sm border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 px-4 py-2.5 border bg-gray-50" rows="3" placeholder="ระบุรายละเอียดเพื่อให้ช่างเตรียมอะไหล่ได้ถูกต้อง"></textarea>
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">ผู้แจ้ง <span class="text-red-500">*</span></label>
+                <input type="text" class="w-full text-sm border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 px-4 py-2.5 border bg-gray-50" placeholder="ชื่อผู้แจ้ง หรือ เบอร์ติดต่อ" required>
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">วันที่สะดวกให้เข้าซ่อม</label>
+                <input type="date" class="w-full text-sm border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 px-4 py-2.5 border bg-gray-50">
+            </div>
+        </div>
+
+        <div class="pt-6 flex justify-end space-x-3 mt-8 border-t border-gray-100">
+            <a href="{% url 'maintenance' %}" class="px-5 py-2.5 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-bold text-sm">
+                ยกเลิก
+            </a>
+            <button type="submit" class="bg-teal-600 hover:bg-teal-700 text-white px-6 py-2.5 rounded-lg font-bold transition-colors shadow-sm text-sm flex items-center">
+                <i class="fas fa-save mr-2"></i> บันทึกรายการแจ้งซ่อม
+            </button>
+        </div>
+        
+    </form>
+</div>
+{% endblock %}

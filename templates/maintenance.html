@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="mb-8 flex justify-between items-center">
+    <div>
+        <h2 class="text-2xl font-bold text-gray-800">ระบบแจ้งซ่อม</h2>
+        <p class="text-gray-500 text-sm mt-1">จัดการคำร้องเรียนและติดตามสถานะการซ่อมบำรุง</p>
+    </div>
+    <a href="{% url 'add_maintenance' %}" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center shadow-sm">
+        <i class="fas fa-plus-circle mr-2"></i> สร้างรายการแจ้งซ่อม
+    </a>
+    </button>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+    <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center space-x-4">
+        <div class="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center text-red-500 text-xl">
+            <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <div>
+            <p class="text-gray-400 text-xs font-bold uppercase">รอดำเนินการ</p>
+            <p class="text-xl font-bold text-gray-800">3</p>
+        </div>
+    </div>
+    <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center space-x-4">
+        <div class="w-12 h-12 rounded-full bg-amber-50 flex items-center justify-center text-amber-500 text-xl">
+            <i class="fas fa-tools"></i>
+        </div>
+        <div>
+            <p class="text-gray-400 text-xs font-bold uppercase">กำลังซ่อม</p>
+            <p class="text-xl font-bold text-gray-800">2</p>
+        </div>
+    </div>
+    <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center space-x-4">
+        <div class="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-blue-500 text-xl">
+            <i class="fas fa-clock"></i>
+        </div>
+        <div>
+            <p class="text-gray-400 text-xs font-bold uppercase">รออะไหล่</p>
+            <p class="text-xl font-bold text-gray-800">1</p>
+        </div>
+    </div>
+    <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center space-x-4">
+        <div class="w-12 h-12 rounded-full bg-green-50 flex items-center justify-center text-green-500 text-xl">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <div>
+            <p class="text-gray-400 text-xs font-bold uppercase">เสร็จสิ้น (เดือนนี้)</p>
+            <p class="text-xl font-bold text-gray-800">14</p>
+        </div>
+    </div>
+</div>
+
+<div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+    <div class="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+        <div class="flex space-x-4">
+            <select class="text-sm border-gray-300 rounded-lg text-gray-600 focus:ring-teal-500 focus:border-teal-500 bg-white px-3 py-1.5 border">
+                <option>สถานะทั้งหมด</option>
+                <option>รอดำเนินการ</option>
+                <option>กำลังซ่อม</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+            <thead>
+                <tr class="bg-white border-b border-gray-100 text-xs text-gray-400 uppercase tracking-wider">
+                    <th class="p-4 font-semibold text-center w-20">ห้อง</th>
+                    <th class="p-4 font-semibold">ปัญหาที่แจ้ง</th>
+                    <th class="p-4 font-semibold">ผู้แจ้ง</th>
+                    <th class="p-4 font-semibold">วันที่แจ้ง</th>
+                    <th class="p-4 font-semibold">ความเร่งด่วน</th>
+                    <th class="p-4 font-semibold">สถานะ</th>
+                    <th class="p-4 font-semibold text-right">จัดการ</th>
+                </tr>
+            </thead>
+            <tbody class="text-sm text-gray-700">
+                <tr class="border-b border-gray-50 hover:bg-gray-50">
+                    <td class="p-4 text-center font-bold">305</td>
+                    <td class="p-4">
+                        <p class="font-semibold text-gray-800">แอร์น้ำหยด</p>
+                        <p class="text-xs text-gray-500 mt-0.5">หยดลงเตียงนอนเลยครับ</p>
+                    </td>
+                    <td class="p-4">คุณนพดล</td>
+                    <td class="p-4 text-gray-500">วันนี้ 08:30</td>
+                    <td class="p-4">
+                        <span class="text-red-500 font-bold text-xs"><i class="fas fa-arrow-up mr-1"></i> ด่วนมาก</span>
+                    </td>
+                    <td class="p-4">
+                        <span class="bg-red-50 text-red-600 px-3 py-1 rounded-full text-[10px] font-bold uppercase">รอดำเนินการ</span>
+                    </td>
+                    <td class="p-4 text-right space-x-2">
+                        <button class="text-teal-600 hover:underline font-bold text-xs">รับเรื่อง</button>
+                    </td>
+                </tr>
+                <tr class="border-b border-gray-50 hover:bg-gray-50">
+                    <td class="p-4 text-center font-bold">102</td>
+                    <td class="p-4">
+                        <p class="font-semibold text-gray-800">หลอดไฟห้องน้ำขาด</p>
+                    </td>
+                    <td class="p-4">คุณสมศรี มีสุข</td>
+                    <td class="p-4 text-gray-500">เมื่อวาน 17:45</td>
+                    <td class="p-4">
+                        <span class="text-gray-500 font-bold text-xs">ปกติ</span>
+                    </td>
+                    <td class="p-4">
+                        <span class="bg-amber-50 text-amber-600 px-3 py-1 rounded-full text-[10px] font-bold uppercase"><i class="fas fa-spinner fa-spin mr-1"></i> กำลังซ่อม</span>
+                    </td>
+                    <td class="p-4 text-right">
+                        <button class="text-gray-400 hover:text-teal-600"><i class="fas fa-edit"></i></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -119,3 +119,24 @@ def tenants(request):
 # 👇 เพิ่มฟังก์ชันนี้สำหรับหน้า "บิลค่าเช่า" ครับ
 def billing(request):
     return render(request, 'billing.html')
+def maintenance(request):
+    return render(request, 'maintenance.html')
+def settings_view(request):
+    return render(request, 'settings.html')
+def login_view(request):
+    return render(request, 'login.html')
+def add_tenant(request):
+    return render(request, 'add_tenant.html')
+def add_room(request):
+    return render(request, 'add_room.html')
+def add_contract(request):
+    return render(request, 'add_contract.html')
+def add_bill(request):
+    return render(request, 'add_bill.html')
+def add_maintenance(request):
+    return render(request, 'add_maintenance.html')
+def add_checkin(request):
+    return render(request, 'add_checkin.html')
+
+def add_checkout(request):
+    return render(request, 'add_checkout.html')

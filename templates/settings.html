@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="mb-8">
+    <h2 class="text-2xl font-bold text-gray-800">การตั้งค่าระบบ</h2>
+    <p class="text-gray-500 text-sm mt-1">จัดการข้อมูลหอพัก ค่าน้ำ-ค่าไฟ และบัญชีรับชำระเงิน</p>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+        <div class="flex items-center mb-4">
+            <div class="w-10 h-10 rounded-full bg-teal-50 flex items-center justify-center text-teal-600 mr-3">
+                <i class="fas fa-building"></i>
+            </div>
+            <h3 class="font-bold text-gray-800">ข้อมูลหอพัก</h3>
+        </div>
+        <div class="space-y-4">
+            <div>
+                <label class="block text-xs font-bold text-gray-500 uppercase mb-1">ชื่อหอพัก</label>
+                <input type="text" value="หอพัก ต้มตุ๋น" class="w-full text-sm border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 px-3 py-2 border bg-gray-50">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-gray-500 uppercase mb-1">ที่อยู่</label>
+                <textarea class="w-full text-sm border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 px-3 py-2 border bg-gray-50" rows="2">123 ซอยรวยล้นฟ้า ถ.มหาเศรษฐี กรุงเทพฯ 10000</textarea>
+            </div>
+            <button class="bg-teal-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-teal-700 w-full transition-colors">
+                บันทึกข้อมูล
+            </button>
+        </div>
+    </div>
+
+    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+        <div class="flex items-center mb-4">
+            <div class="w-10 h-10 rounded-full bg-amber-50 flex items-center justify-center text-amber-500 mr-3">
+                <i class="fas fa-bolt"></i>
+            </div>
+            <h3 class="font-bold text-gray-800">เรทค่าน้ำ - ค่าไฟ</h3>
+        </div>
+        <div class="space-y-4">
+            <div class="flex items-center justify-between border-b border-gray-50 pb-3">
+                <span class="text-sm font-medium text-gray-700">ค่าไฟ (บาท/หน่วย)</span>
+                <input type="number" value="8" class="w-20 text-sm border-gray-300 rounded-lg text-center px-2 py-1 border focus:ring-teal-500 focus:border-teal-500">
+            </div>
+            <div class="flex items-center justify-between border-b border-gray-50 pb-3">
+                <span class="text-sm font-medium text-gray-700">ค่าน้ำ (บาท/หน่วย)</span>
+                <input type="number" value="18" class="w-20 text-sm border-gray-300 rounded-lg text-center px-2 py-1 border focus:ring-teal-500 focus:border-teal-500">
+            </div>
+            <div class="flex items-center justify-between pb-3">
+                <span class="text-sm font-medium text-gray-700">ค่าส่วนกลาง (บาท/เดือน)</span>
+                <input type="number" value="300" class="w-20 text-sm border-gray-300 rounded-lg text-center px-2 py-1 border focus:ring-teal-500 focus:border-teal-500">
+            </div>
+            <button class="bg-teal-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-teal-700 w-full transition-colors">
+                อัปเดตเรทราคา
+            </button>
+        </div>
+    </div>
+    
+    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm md:col-span-2">
+        <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center">
+                <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-500 mr-3">
+                    <i class="fas fa-money-check-alt"></i>
+                </div>
+                <h3 class="font-bold text-gray-800">บัญชีรับชำระเงิน</h3>
+            </div>
+            <button onclick="document.getElementById('addAccountModal').classList.remove('hidden')" class="group flex items-center text-sm font-semibold text-teal-600 hover:text-teal-700 bg-transparent hover:bg-teal-50 px-3 py-2 rounded-lg transition-all duration-200 focus:outline-none">
+    <i class="fas fa-plus mr-1.5 transition-transform group-hover:scale-110"></i> 
+    เพิ่มบัญชี
+</button>
+</button>
+        </div>
+        <div class="bg-gray-50 p-4 rounded-xl flex items-center justify-between border border-gray-100">
+            <div class="flex items-center space-x-4">
+                <div class="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center text-white font-bold text-xl shadow-sm">K</div>
+                <div>
+                    <p class="font-bold text-gray-800">ธนาคารกสิกรไทย</p>
+                    <p class="text-sm text-gray-500">นายสมชาย ใจดี • 123-4-56789-0</p>
+                </div>
+            </div>
+            <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-[10px] font-bold uppercase">บัญชีหลัก</span>
+        </div>
+    </div>
+</div>
+<div id="addAccountModal" class="fixed inset-0 z-50 hidden bg-black/50 backdrop-blur-sm flex items-center justify-center transition-all">
+    <div class="bg-white rounded-2xl shadow-xl w-full max-w-md mx-4 overflow-hidden transform transition-all">
+        
+        <div class="flex justify-between items-center p-6 border-b border-gray-100 bg-gray-50">
+            <h3 class="text-lg font-bold text-gray-800">เพิ่มบัญชีรับชำระเงิน</h3>
+            <button onclick="document.getElementById('addAccountModal').classList.add('hidden')" class="text-gray-400 hover:text-red-500 transition-colors focus:outline-none">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        
+        <form action="#" method="POST" class="p-6 space-y-5">
+    {% csrf_token %}  <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">ธนาคาร</label>
+        ...
+                <select class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors">
+                    <option value="">-- เลือกธนาคาร --</option>
+                    <option value="kbank">ธนาคารกสิกรไทย</option>
+                    <option value="scb">ธนาคารไทยพาณิชย์</option>
+                    <option value="bbl">ธนาคารกรุงเทพ</option>
+                    <option value="ktb">ธนาคารกรุงไทย</option>
+                    <option value="krungsri">ธนาคารกรุงศรีอยุธยา</option>
+                </select>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">ชื่อบัญชี</label>
+                <input type="text" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors" placeholder="เช่น นายสมชาย ใจดี">
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">เลขที่บัญชี</label>
+                <input type="text" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors" placeholder="xxx-x-xxxxx-x">
+            </div>
+            
+            <div class="flex items-center pt-2">
+                <input type="checkbox" id="is_default" class="rounded border-gray-300 text-teal-600 focus:ring-teal-500 h-4 w-4 mr-2 cursor-pointer">
+                <label for="is_default" class="text-sm text-gray-700 cursor-pointer">ตั้งเป็นบัญชีหลัก</label>
+            </div>
+            
+            <div class="pt-4 flex justify-end space-x-3 border-t border-gray-100">
+                <button type="button" onclick="document.getElementById('addAccountModal').classList.add('hidden')" class="px-5 py-2.5 text-sm text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-lg font-medium transition-colors">
+                    ยกเลิก
+                </button>
+                <button type="submit" class="px-5 py-2.5 text-sm bg-teal-600 hover:bg-teal-700 text-white rounded-lg font-medium transition-colors shadow-sm">
+                    บันทึกข้อมูล
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
