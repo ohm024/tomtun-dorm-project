@@ -138,3 +138,38 @@ class Billing(models.Model):
         
         self.total_amount = self.rent_amount + self.service_fee + water_total + elec_total
         return self.total_amount
+    
+# วางไว้ล่างสุดของไฟล์ models.py
+class CheckInOutLog(models.Model):
+    TRANSACTION_TYPE = (
+        ('in', 'เช็คอิน (Check-in)'),
+        ('out', 'เช็คเอาท์ (Check-out)'),
+    )
+    STATUS_CHOICES = (
+        ('success', 'สำเร็จ'),
+        ('pending', 'รอยืนยัน'),
+    )
+
+    transaction_type = models.CharField(max_length=10, choices=TRANSACTION_TYPE, verbose_name="ประเภทรายการ")
+    room = models.ForeignKey(Room, on_delete=models.CASCADE, verbose_name="ห้องพัก")
+    tenant_name = models.CharField(max_length=150, verbose_name="ชื่อผู้เช่า")
+    
+    transaction_date = models.DateTimeField(verbose_name="วันที่/เวลา")
+    
+    water_meter = models.IntegerField(default=0, verbose_name="เลขมิเตอร์น้ำ")
+    electric_meter = models.IntegerField(default=0, verbose_name="เลขมิเตอร์ไฟ")
+    
+    # สำหรับเช็คอิน
+    key_received = models.BooleanField(default=False, verbose_name="รับกุญแจแล้ว")
+    
+    # สำหรับเช็คเอาท์
+    damage_fee = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name="หักค่าเสียหาย")
+    refund_deposit = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name="เงินประกันที่คืน")
+    
+    notes = models.TextField(blank=True, verbose_name="หมายเหตุ/สภาพห้อง")
+    staff_name = models.CharField(max_length=100, default="Admin สมชาย", verbose_name="เจ้าหน้าที่")
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='success', verbose_name="สถานะ")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.get_transaction_type_display()} - ห้อง {self.room.room_number}"

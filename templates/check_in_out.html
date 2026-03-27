@@ -1,33 +1,25 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="flex justify-between items-end mb-6">
-    
+<div class="mb-8 flex justify-between items-center">
     <div>
         <h2 class="text-2xl font-bold text-gray-800">เช็คอิน / เช็คเอาท์</h2>
         <p class="text-gray-500 text-sm mt-1">บันทึกประวัติการเข้าพักและแจ้งคืนห้องพัก</p>
     </div>
-
-    <div class="flex items-center space-x-3">
-        <a href="{% url 'add_checkout' %}" class="bg-white border border-red-500 text-red-600 hover:bg-red-50 px-4 py-2 rounded-lg font-medium transition-colors flex items-center shadow-sm">
+    <div class="flex space-x-3">
+        <a href="{% url 'add_checkout' %}" class="bg-white border border-red-500 text-red-500 hover:bg-red-50 px-4 py-2 rounded-lg font-medium transition-colors flex items-center shadow-sm">
             <i class="fas fa-sign-out-alt mr-2"></i> เช็คเอาท์
         </a>
         <a href="{% url 'add_checkin' %}" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center shadow-sm">
             <i class="fas fa-sign-in-alt mr-2"></i> เช็คอินใหม่
         </a>
     </div>
-
 </div>
 
-<div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+<div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
     <div class="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
-        <div class="flex items-center space-x-4">
-            <h3 class="font-bold text-gray-700 text-sm uppercase tracking-wider">รายการล่าสุด</h3>
-            <div class="h-4 w-[1px] bg-gray-300"></div>
-            <p class="text-xs text-gray-400">แสดง 10 รายการล่าสุดวันนี้</p>
-        </div>
-        <div class="flex space-x-2">
-            <button class="text-gray-500 hover:text-teal-600 text-sm font-medium"><i class="fas fa-filter mr-1"></i> กรองข้อมูล</button>
+        <div class="flex items-center space-x-2">
+            <h3 class="font-bold text-gray-700 text-sm">รายการล่าสุด</h3>
         </div>
     </div>
 
@@ -35,103 +27,48 @@
         <table class="w-full text-left border-collapse">
             <thead>
                 <tr class="bg-white border-b border-gray-100 text-xs text-gray-400 uppercase tracking-wider">
-                    <th class="p-4 font-semibold text-center w-20">ห้อง</th>
+                    <th class="p-4 font-semibold w-20">ห้อง</th>
                     <th class="p-4 font-semibold">ชื่อผู้เช่า</th>
                     <th class="p-4 font-semibold">ประเภทรายการ</th>
                     <th class="p-4 font-semibold">วันที่ / เวลา</th>
                     <th class="p-4 font-semibold">เจ้าหน้าที่</th>
                     <th class="p-4 font-semibold">สถานะ</th>
-                    <th class="p-4 font-semibold text-right">เพิ่มเติม</th>
                 </tr>
             </thead>
             <tbody class="text-sm text-gray-700">
-                
-                <tr class="border-b border-gray-50 hover:bg-gray-50 transition-colors">
-                    <td class="p-4 text-center"><span class="font-bold text-gray-800">101</span></td>
+                {% for log in logs %}
+                <tr class="border-b border-gray-50 hover:bg-gray-50">
+                    <td class="p-4 font-bold">{{ log.room.room_number }}</td>
                     <td class="p-4">
-                        <div class="flex items-center">
-                            <img src="https://ui-avatars.com/api/?name=สมชาย+ใจดี&background=0d9488&color=fff" class="w-8 h-8 rounded-full mr-3 border border-gray-100">
-                            <span>คุณสมชาย ใจดี</span>
-                        </div>
-                    </td>
+    <div class="flex items-center">
+        <div class="w-8 h-8 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center font-bold text-xs mr-3 uppercase">
+            {{ log.tenant_name|first }}
+        </div>
+        <span class="font-medium text-gray-800">
+            คุณ{{ log.tenant_name }}
+        </span>
+    </div>
+</td>
                     <td class="p-4">
-                        <span class="text-teal-600 font-medium"><i class="fas fa-arrow-right mr-2"></i>เช็คอิน (Check-in)</span>
+                        {% if log.transaction_type == 'in' %}
+                            <span class="text-teal-600 font-bold"><i class="fas fa-arrow-right mr-1"></i> เช็คอิน (Check-in)</span>
+                        {% else %}
+                            <span class="text-red-500 font-bold"><i class="fas fa-arrow-left mr-1"></i> เช็คเอาท์ (Check-out)</span>
+                        {% endif %}
                     </td>
-                    <td class="p-4 text-gray-500">26 มี.ค. 2026 | 10:30</td>
-                    <td class="p-4 text-xs font-medium text-gray-400 italic">Admin สมชาย</td>
+                    <td class="p-4 text-gray-500">{{ log.transaction_date|date:"d M Y | H:i" }}</td>
+                    <td class="p-4 text-gray-500 italic">{{ log.staff_name }}</td>
                     <td class="p-4">
-                        <span class="bg-green-50 text-green-600 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-tight">สำเร็จ</span>
-                    </td>
-                    <td class="p-4 text-right">
-                        <div class="relative group inline-block text-left">
-                            <button class="text-gray-400 hover:text-teal-600 bg-transparent hover:bg-teal-50 p-2 rounded-full transition-colors focus:outline-none">
-                                <i class="fas fa-ellipsis-h"></i>
-                            </button>
-                            <div class="absolute right-0 mt-1 w-40 bg-white rounded-xl shadow-lg border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 origin-top-right">
-                                <div class="py-1">
-                                    <a href="#" class="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-teal-50 hover:text-teal-700 transition-colors"><i class="fas fa-eye w-5"></i> ดูรายละเอียด</a>
-                                    <a href="#" class="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-teal-50 hover:text-teal-700 transition-colors"><i class="fas fa-edit w-5"></i> แก้ไขข้อมูล</a>
-                                    <hr class="border-gray-100 my-1">
-                                    <a href="#" class="flex items-center px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors"><i class="fas fa-trash-alt w-5"></i> ลบรายการ</a>
-                                </div>
-                            </div>
-                        </div>
+                        {% if log.status == 'success' %}
+                            <span class="bg-green-50 text-green-600 px-3 py-1 rounded-full text-[10px] font-bold uppercase">สำเร็จ</span>
+                        {% else %}
+                            <span class="bg-amber-50 text-amber-600 px-3 py-1 rounded-full text-[10px] font-bold uppercase">รอยืนยัน</span>
+                        {% endif %}
                     </td>
                 </tr>
-                
-                <tr class="border-b border-gray-50 hover:bg-gray-50 transition-colors">
-                    <td class="p-4 text-center"><span class="font-bold text-gray-800">402</span></td>
-                    <td class="p-4">
-                        <div class="flex items-center">
-                            <img src="https://ui-avatars.com/api/?name=นก+กระจิบ&background=f43f5e&color=fff" class="w-8 h-8 rounded-full mr-3 border border-gray-100">
-                            <span>คุณนก กระจิบ</span>
-                        </div>
-                    </td>
-                    <td class="p-4">
-                        <span class="text-red-500 font-medium"><i class="fas fa-arrow-left mr-2"></i>เช็คเอาท์ (Check-out)</span>
-                    </td>
-                    <td class="p-4 text-gray-500">26 มี.ค. 2026 | 09:15</td>
-                    <td class="p-4 text-xs font-medium text-gray-400 italic">Admin สมชาย</td>
-                    <td class="p-4">
-                        <span class="bg-green-50 text-green-600 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-tight">สำเร็จ</span>
-                    </td>
-                    <td class="p-4 text-right">
-                        <div class="relative group inline-block text-left">
-                            <button class="text-gray-400 hover:text-teal-600 bg-transparent hover:bg-teal-50 p-2 rounded-full transition-colors focus:outline-none">
-                                <i class="fas fa-ellipsis-h"></i>
-                            </button>
-                            <div class="absolute right-0 mt-1 w-40 bg-white rounded-xl shadow-lg border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 origin-top-right">
-                                <div class="py-1">
-                                    <a href="#" class="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-teal-50 hover:text-teal-700 transition-colors"><i class="fas fa-eye w-5"></i> ดูรายละเอียด</a>
-                                    <a href="#" class="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-teal-50 hover:text-teal-700 transition-colors"><i class="fas fa-edit w-5"></i> แก้ไขข้อมูล</a>
-                                    <hr class="border-gray-100 my-1">
-                                    <a href="#" class="flex items-center px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors"><i class="fas fa-trash-alt w-5"></i> ลบรายการ</a>
-                                </div>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-
-                <tr class="border-b border-gray-50 hover:bg-gray-50 transition-colors italic bg-amber-50/20">
-                    <td class="p-4 text-center"><span class="font-bold text-gray-800">205</span></td>
-                    <td class="p-4">
-                        <div class="flex items-center">
-                            <img src="https://ui-avatars.com/api/?name=มานะ+มานี&background=f59e0b&color=fff" class="w-8 h-8 rounded-full mr-3 border border-gray-100">
-                            <span>คุณมานะ มานี</span>
-                        </div>
-                    </td>
-                    <td class="p-4">
-                        <span class="text-amber-600 font-medium animate-pulse"><i class="fas fa-spinner fa-spin mr-2"></i>กำลังดำเนินการ...</span>
-                    </td>
-                    <td class="p-4 text-gray-500">26 มี.ค. 2026 | 13:45</td>
-                    <td class="p-4 text-xs font-medium text-gray-400 italic">Admin สมชาย</td>
-                    <td class="p-4">
-                        <span class="bg-amber-100 text-amber-700 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-tight">รอยืนยัน</span>
-                    </td>
-                    <td class="p-4 text-right">
-                        <button class="text-amber-600 hover:underline text-xs font-bold">จัดการ</button>
-                    </td>
-                </tr>
+                {% empty %}
+                <tr><td colspan="6" class="p-6 text-center text-gray-400">ยังไม่มีประวัติการทำรายการ</td></tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
