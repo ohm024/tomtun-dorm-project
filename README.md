@@ -61,35 +61,14 @@
 <img width="761" height="766" alt="image" src="https://github.com/user-attachments/assets/d8eb8f87-9417-4682-9883-ae3a60fd75b2" />
 <img width="383" height="768" alt="image" src="https://github.com/user-attachments/assets/516f5f62-e43f-4a3f-880f-24735431b418" />
 
-
-### 7. API End-Points
-| Method | Endpoint | Description |
-| :--- | :--- | :--- |
-| `POST` | `/api/auth/login` | เข้าสู่ระบบและรับ Token |
-| `GET` | `/api/rooms` | ดึงข้อมูลรายการห้องพักทั้งหมด |
-| `POST` | `/api/billing/calculate` | คำนวณบิลค่าน้ำ-ไฟประจำเดือน |
-*(ดู API ทั้งหมดได้ในไฟล์ API_Documentation.pdf)*
-
 ---
 
 ## 🛠️ 2.4 Tech Stack & Tools
 
 - **Frontend:** HTML5, CSS3, Bootstrap 5 / TailwindCSS, JavaScript
 - **Backend:** Python (Django Framework)
-- **Database:** SQLite / PostgreSQL
+- **Database:** SQLite 
 - **Design:** Figma, Draw.io (สำหรับ Diagrams)
-- **Project Management:** Trello, GitHub, Git
+- **Project Management:** GitHub, Git
 
 ---
-
-## 🧪 2.5 Test Case และผลการทดสอบ (Testing)
-- **Test Cases:** [ใส่ลิงก์ Google Sheets ตาราง Test Case ทั้ง 23 ข้อที่เราทำไว้]
-- **API Testing:** ทำการทดสอบ API ด้วย Postman [แนบลิงก์รูปภาพผลการยิง Postman ถ้ามี]
-- **ผลการทดสอบเบื้องต้น:** ฟังก์ชันหลัก (Critical & High Priority) จำนวน 12 ข้อ ผ่านการทดสอบ (Pass) 100% 
-
----
-
-## 🚀 2.6 การ Deploy (Deployment)
-- **Live URL (Frontend/System):** [ใส่ลิงก์เว็บไซต์ที่ออนไลน์จริง ถ้าเอาขึ้น Vercel หรือ PythonAnywhere]
-- **API Base URL:** [ใส่ลิงก์เซิร์ฟเวอร์หลังบ้าน]
-
