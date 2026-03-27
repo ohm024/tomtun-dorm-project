@@ -7,7 +7,9 @@ from management import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.dashboard, name='dashboard'),           # หน้าแรก (Dashboard)
+    path('', views.login_view, name='login'),                  # 1. ให้หน้าแรกสุดคือ Login
+    path('dashboard/', views.dashboard, name='dashboard'),     # 2. ย้ายแดชบอร์ดมาไว้ที่ /dashboard/
+    path('logout/', views.logout_view, name='logout'),         # 3. เพิ่มระบบออกจากระบบ
     path('rooms/', views.rooms, name='rooms'),             # หน้าจัดการห้องพัก
     path('rooms/edit/<int:room_id>/', views.edit_room, name='edit_room'),
     path('rooms/delete/<int:room_id>/', views.delete_room, name='delete_room'),
