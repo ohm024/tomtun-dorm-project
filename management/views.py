@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.db.models import Sum
-from .models import Room, Tenant, Invoice,MaintenanceRequest
+from .models import Room, Tenant, Invoice,MaintenanceRequest,Billing
 from django.db.models.functions import TruncMonth # 👈 ตัวจัดกลุ่มตามเดือน
 from datetime import datetime, timedelta       # 👈 ตัวคำนวณวันเวลา
 from django.shortcuts import redirect
@@ -174,9 +174,79 @@ def tenants(request):
         'status_filter': status_filter
     })
 
-# 👇 เพิ่มฟังก์ชันนี้สำหรับหน้า "บิลค่าเช่า" ครับ
+# ฟังก์ชันสำหรับหน้าแสดงรายการบิลทั้งหมด (แก้ Error ที่เจอ)
 def billing(request):
-    return render(request, 'billing.html')
+    # ดึงข้อมูลบิลทั้งหมดเรียงจากใหม่ไปเก่า
+    billings = Billing.objects.all().order_by('-created_at')
+    
+    # คำนวณยอดรวมต่างๆ สำหรับแสดงใน Card ด้านบน
+    total_unpaid = Billing.objects.filter(status='pending').aggregate(Sum('total_amount'))['total_amount__sum'] or 0
+    
+    # ยอดชำระแล้วเดือนนี้
+    today = datetime.now()
+    total_paid = Billing.objects.filter(status='paid', created_at__year=today.year, created_at__month=today.month).aggregate(Sum('total_amount'))['total_amount__sum'] or 0
+    
+    # นับจำนวนบิลที่รอชำระ
+    pending_count = Billing.objects.filter(status='pending').count()
+
+    context = {
+        'billings': billings,
+        'total_unpaid': total_unpaid,
+        'total_paid': total_paid,
+        'pending_count': pending_count,
+    }
+    return render(request, 'billing.html', context)
+
+# ฟังก์ชันสำหรับบันทึกบิลใหม่และคำนวณเงิน
+def add_bill(request):
+    if request.method == 'POST':
+        room_id = request.POST.get('room')
+        room = Room.objects.get(id=room_id)
+        
+        # ดึงข้อมูลผู้เช่าของห้องนั้น
+        tenant = Tenant.objects.filter(room=room, is_active=True).first()
+        
+        # รับค่าเงินต่างๆ จาก Form
+        rent = float(request.POST.get('rent_amount', 0))
+        service = float(request.POST.get('service_fee', 0))
+        
+        # ค่าน้ำ (หน่วยละ 20)
+        w_prev = int(request.POST.get('water_prev', 0))
+        w_curr = int(request.POST.get('water_curr', 0))
+        water_total = (w_curr - w_prev) * 20
+        
+        # ค่าไฟ (หน่วยละ 7)
+        e_prev = int(request.POST.get('elec_prev', 0))
+        e_curr = int(request.POST.get('elec_curr', 0))
+        elec_total = (e_curr - e_prev) * 7
+        
+        total = rent + service + water_total + elec_total
+        
+        # แปลงเดือนจาก input type="month" (YYYY-MM) ให้เป็น DateField (YYYY-MM-01) เพื่อบันทึกลงฐานข้อมูล
+        month_str = request.POST.get('billing_month')
+        billing_month_date = f"{month_str}-01" if month_str else None
+        
+        # สร้างบิลใหม่
+        Billing.objects.create(
+            room=room,
+            tenant=tenant,
+            billing_month=billing_month_date,
+            rent_amount=rent,
+            service_fee=service,
+            water_prev_meter=w_prev,
+            water_curr_meter=w_curr,
+            elec_prev_meter=e_prev,
+            elec_curr_meter=e_curr,
+            total_amount=total,
+            due_date=request.POST.get('due_date'),
+            status='pending'
+        )
+        return redirect('billing')
+
+    # สำหรับหน้าเลือกห้อง เราจะดึงเฉพาะผู้เช่าที่ Active และมีห้องพักอยู่ เพื่อป้องกัน error ผูกบิลผิด
+    active_tenants = Tenant.objects.filter(is_active=True).exclude(room__isnull=True)
+    
+    return render(request, 'add_bill.html', {'active_tenants': active_tenants})
 def maintenance(request):
     return render(request, 'maintenance.html')
 def settings_view(request):
@@ -243,8 +313,6 @@ def add_room(request):
 
     # ถ้าไม่ใช่ POST (คือผู้ใช้เพิ่งกดเข้ามาหน้านี้ครั้งแรก) ก็ให้แสดงหน้าฟอร์มปกติ
     return render(request, 'add_room.html')
-def add_bill(request):
-    return render(request, 'add_bill.html')
 def add_maintenance(request):
     return render(request, 'add_maintenance.html')
 def add_checkin(request):

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Room,Tenant,Invoice,MaintenanceRequest,Contract
+from .models import Room,Tenant,MaintenanceRequest,Contract,Billing
 
 # ปรับแต่งหน้าตาของตาราง Room ในหน้า Admin
 @admin.register(Room)
@@ -19,11 +19,6 @@ class TenantAdmin(admin.ModelAdmin):
     # สร้างตัวกรองข้อมูลด้านขวามือ
     list_filter = ('is_active',)
 
-@admin.register(Invoice)
-class InvoiceAdmin(admin.ModelAdmin):
-    list_display = ('room', 'tenant', 'month', 'amount', 'due_date', 'status')
-    list_filter = ('status', 'month')
-    search_fields = ('room__room_number', 'tenant__first_name')
 
 @admin.register(MaintenanceRequest)
 class MaintenanceRequestAdmin(admin.ModelAdmin):
@@ -36,3 +31,17 @@ class ContractAdmin(admin.ModelAdmin):
     list_display = ('contract_number', 'contract_type', 'room', 'tenant_name', 'start_date', 'status')
     list_filter = ('contract_type', 'status', 'start_date')
     search_fields = ('contract_number', 'tenant_name', 'room__room_number')
+
+@admin.register(Billing)
+class BillingAdmin(admin.ModelAdmin):
+    # กำหนดคอลัมน์ที่จะแสดงในหน้าตาราง
+    list_display = ('room', 'tenant', 'billing_month', 'total_amount', 'status', 'due_date')
+    
+    # เพิ่มตัวกรองข้อมูลด้านขวามือ (กรองตามสถานะ หรือ เดือน)
+    list_filter = ('status', 'billing_month')
+    
+    # เพิ่มช่องค้นหา (หาจากเลขห้อง หรือ ชื่อผู้เช่า)
+    search_fields = ('room__room_number', 'tenant__first_name', 'tenant__last_name')
+    
+    # เรียงลำดับจากวันที่สร้างล่าสุดไปเก่าสุด
+    ordering = ('-created_at',)

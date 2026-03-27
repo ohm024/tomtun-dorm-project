@@ -10,9 +10,8 @@
 </div>
 
 <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm max-w-4xl">
-    <form action="{% url 'billing' %}" method="GET" class="space-y-6">
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <form action="{% url 'add_bill' %}" method="POST" class="space-y-6">
+        {% csrf_token %} <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             
             <div class="md:col-span-2 border-b border-gray-100 pb-2">
                 <h3 class="text-lg font-bold text-gray-800"><i class="fas fa-info-circle text-teal-600 mr-2"></i>ข้อมูลพื้นฐาน</h3>
@@ -20,17 +19,17 @@
             
             <div>
                 <label class="block text-sm font-bold text-gray-700 mb-1">ห้องพัก <span class="text-red-500">*</span></label>
-                <select class="w-full text-sm border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 px-4 py-2.5 border bg-white" required>
+                <select name="room" class="w-full text-sm border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 px-4 py-2.5 border bg-white" required>
                     <option value="">-- เลือกห้องพัก --</option>
-                    <option value="101">101 - คุณสมชาย ใจดี</option>
-                    <option value="102">102 - คุณสมศรี มีสุข</option>
-                    <option value="201">201 - คุณสมรักษ์</option>
+                    {% for t in active_tenants %}
+            <option value="{{ t.room.id }}">{{ t.room.room_number }} - คุณ{{ t.first_name }} {{ t.last_name }}</option>
+        {% endfor %}
                 </select>
             </div>
             
             <div>
                 <label class="block text-sm font-bold text-gray-700 mb-1">รอบบิลประจำเดือน <span class="text-red-500">*</span></label>
-                <input type="month" class="w-full text-sm border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 px-4 py-2.5 border bg-gray-50" required>
+                <input type="month" name="billing_month" class="w-full text-sm border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 px-4 py-2.5 border bg-gray-50" required>
             </div>
 
             <div class="md:col-span-2 border-b border-gray-100 pb-2 mt-4">
@@ -39,7 +38,7 @@
 
             <div class="md:col-span-2">
                 <label class="block text-sm font-bold text-gray-700 mb-1">ค่าเช่าห้องพัก (บาท) <span class="text-red-500">*</span></label>
-                <input type="number" class="w-full text-sm border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 px-4 py-2.5 border bg-gray-50" placeholder="เช่น 4500" required>
+                <input type="number" name="rent_amount" class="w-full text-sm border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 px-4 py-2.5 border bg-gray-50" placeholder="เช่น 4500" required>
             </div>
 
             <div class="bg-blue-50/50 p-4 rounded-xl border border-blue-100">
@@ -47,11 +46,11 @@
                 <div class="space-y-3">
                     <div>
                         <span class="text-xs text-gray-500 block mb-1">เลขจดครั้งก่อน</span>
-                        <input type="number" class="w-full text-sm border-gray-300 rounded-lg px-3 py-2 border bg-white" placeholder="0">
+                        <input type="number" name="water_prev" class="w-full text-sm border-gray-300 rounded-lg px-3 py-2 border bg-white" placeholder="0" required>
                     </div>
                     <div>
                         <span class="text-xs text-gray-500 block mb-1">เลขจดครั้งนี้</span>
-                        <input type="number" class="w-full text-sm border-gray-300 rounded-lg px-3 py-2 border bg-white" placeholder="0">
+                        <input type="number" name="water_curr" class="w-full text-sm border-gray-300 rounded-lg px-3 py-2 border bg-white" placeholder="0" required>
                     </div>
                 </div>
             </div>
@@ -61,23 +60,23 @@
                 <div class="space-y-3">
                     <div>
                         <span class="text-xs text-gray-500 block mb-1">เลขจดครั้งก่อน</span>
-                        <input type="number" class="w-full text-sm border-gray-300 rounded-lg px-3 py-2 border bg-white" placeholder="0">
+                        <input type="number" name="elec_prev" class="w-full text-sm border-gray-300 rounded-lg px-3 py-2 border bg-white" placeholder="0" required>
                     </div>
                     <div>
                         <span class="text-xs text-gray-500 block mb-1">เลขจดครั้งนี้</span>
-                        <input type="number" class="w-full text-sm border-gray-300 rounded-lg px-3 py-2 border bg-white" placeholder="0">
+                        <input type="number" name="elec_curr" class="w-full text-sm border-gray-300 rounded-lg px-3 py-2 border bg-white" placeholder="0" required>
                     </div>
                 </div>
             </div>
 
             <div class="md:col-span-2">
                 <label class="block text-sm font-bold text-gray-700 mb-1">ค่าส่วนกลาง / ค่าใช้จ่ายอื่นๆ (บาท)</label>
-                <input type="number" class="w-full text-sm border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 px-4 py-2.5 border bg-gray-50" placeholder="เช่น 300">
+                <input type="number" name="service_fee" class="w-full text-sm border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 px-4 py-2.5 border bg-gray-50" placeholder="เช่น 300" value="0">
             </div>
             
             <div class="md:col-span-2">
                 <label class="block text-sm font-bold text-gray-700 mb-1">กำหนดชำระภายในวันที่ <span class="text-red-500">*</span></label>
-                <input type="date" class="w-full md:w-1/2 text-sm border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 px-4 py-2.5 border bg-gray-50" required>
+                <input type="date" name="due_date" class="w-full md:w-1/2 text-sm border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 px-4 py-2.5 border bg-gray-50" required>
             </div>
         </div>
 

@@ -95,3 +95,36 @@ class Contract(models.Model):
 
     def __str__(self):
         return f"{self.contract_number} - {self.tenant_name}"
+class Billing(models.Model):
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE)
+    billing_month = models.DateField()  # สำหรับรอบบิลประจำเดือน
+    
+    # ค่าเช่าและค่าบริการคงที่
+    rent_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    service_fee = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    
+    # ค่าน้ำ
+    water_prev_meter = models.IntegerField(default=0)
+    water_curr_meter = models.IntegerField(default=0)
+    water_unit_price = models.DecimalField(max_digits=6, decimal_places=2, default=20)
+    
+    # ค่าไฟ
+    elec_prev_meter = models.IntegerField(default=0)
+    elec_curr_meter = models.IntegerField(default=0)
+    elec_unit_price = models.DecimalField(max_digits=6, decimal_places=2, default=7)
+    
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    due_date = models.DateField()
+    status = models.CharField(max_length=20, choices=[('pending', 'ค้างชำระ'), ('paid', 'ชำระแล้ว')], default='pending')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def calculate_total(self):
+        water_units = self.water_curr_meter - self.water_prev_meter
+        elec_units = self.elec_curr_meter - self.elec_prev_meter
+        
+        water_total = water_units * self.water_unit_price
+        elec_total = elec_units * self.elec_unit_price
+        
+        self.total_amount = self.rent_amount + self.service_fee + water_total + elec_total
+        return self.total_amount
