@@ -47,3 +47,7 @@
 ข้อมูลสัญญาเช่า
 
 <img width="658" height="765" alt="image" src="https://github.com/user-attachments/assets/5065d90a-73c5-4d46-8452-2db36b4edeb0" />
+
+หน้าสรุปทุกอย่าง
+
+<img width="847" height="758" alt="image" src="https://github.com/user-attachments/assets/a3241fb9-6c90-49ee-aa45-49b044568e5b" />
