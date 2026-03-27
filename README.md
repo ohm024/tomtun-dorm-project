@@ -44,6 +44,10 @@
 <img width="648" height="665" alt="image" src="https://github.com/user-attachments/assets/4b6a918d-279b-4ce7-811c-28cbcbfc9a3f" />
 <img width="411" height="513" alt="image" src="https://github.com/user-attachments/assets/4dbc7424-63c3-4493-a7db-571ea111997b" />
 
+ส่วนของการออกบิล
+
+<img width="518" height="1079" alt="image" src="https://github.com/user-attachments/assets/bd42d53e-ceae-40c5-991d-d977ba82da48" />
+
 
 ### 4. ER Diagram
 <img width="1313" height="1064" alt="image" src="https://github.com/user-attachments/assets/cfa04892-fb22-43e4-bbff-ef95352a24f7" />
