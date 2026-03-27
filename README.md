@@ -24,7 +24,7 @@
 ---
 
 ## 📑 2.2 เอกสารความต้องการของระบบ (SRS)
-
+[เอกสารข้อกำหนดความต้องการซอฟต์แวร์.pdf](https://github.com/user-attachments/files/26299505/default.pdf)
 
 ---
 
@@ -90,3 +90,8 @@
 - **Project Management:** GitHub, Git
 
 ---
+
+2.5  Test  case ของระบบ และผลการทดสอบระบบในส่วนที่พัฒนา
+
+[ตาราง Test Case ระบบจัดการห้องพัก (1).xlsx](https://github.com/user-attachments/files/26299531/Test.Case.1.xlsx)
+
