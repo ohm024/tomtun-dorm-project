@@ -39,6 +39,8 @@
 
 - **Actors:** Admin (ผู้ดูแลระบบ), Tenant (ผู้เช่า)
 
+---
+
 ### 3. Activity Diagram
 <img width="276" height="744" alt="image" src="https://github.com/user-attachments/assets/edfc929e-0143-4059-ba5d-430b39253141" />
 <img width="648" height="665" alt="image" src="https://github.com/user-attachments/assets/4b6a918d-279b-4ce7-811c-28cbcbfc9a3f" />
@@ -52,13 +54,30 @@
 ### 4. ER Diagram
 <img width="1313" height="1064" alt="image" src="https://github.com/user-attachments/assets/cfa04892-fb22-43e4-bbff-ef95352a24f7" />
 
-
+---
 
 ### 6. UX/UI Design
 - **Figma Design:https://www.figma.com/design/UvzengjynBO3aH7dTtoyo8/%E0%B8%AB%E0%B8%AD%E0%B8%9E%E0%B8%B1%E0%B8%81-%E0%B8%95%E0%B9%89%E0%B8%A1%E0%B8%95%E0%B8%B8%E0%B9%8B%E0%B8%99?node-id=0-1&t=ZWFoPFXkpDJBXWUY-1
 <img width="691" height="797" alt="image" src="https://github.com/user-attachments/assets/6d28e810-d28d-4781-abac-b17e1aa681ea" />
 <img width="761" height="766" alt="image" src="https://github.com/user-attachments/assets/d8eb8f87-9417-4682-9883-ae3a60fd75b2" />
 <img width="383" height="768" alt="image" src="https://github.com/user-attachments/assets/516f5f62-e43f-4a3f-880f-24735431b418" />
+
+---
+
+### 7. API End-Points (ระบบเส้นทาง URL ภายในระบบ)
+| HTTP Method | URL Path (End-Point) | หน้าที่การทำงาน (Description) |
+| :--- | :--- | :--- |
+| `GET` | `/` | แสดงหน้า Dashboard สรุปข้อมูลและกราฟ |
+| `GET` | `/rooms/` | แสดงรายการห้องพักทั้งหมดและค้นหา |
+| `GET` / `POST` | `/rooms/add/` | แสดงฟอร์มและบันทึกข้อมูลห้องพักใหม่ |
+| `GET` / `POST` | `/rooms/edit/<id>/` | แก้ไขข้อมูลห้องพัก |
+| `POST` | `/rooms/delete/<id>/` | ลบข้อมูลห้องพัก |
+| `GET` | `/tenants/` | แสดงรายการผู้เช่าทั้งหมด |
+| `GET` / `POST` | `/tenants/add/` | เพิ่มผู้เช่าใหม่และอัปเดตสถานะห้องเป็น "มีผู้เช่า" |
+| `POST` | `/tenants/delete/<id>/` | ลบผู้เช่าและคืนสถานะห้องให้กลับเป็น "ว่าง" |
+| `GET` | `/billing/` | แสดงตารางรายการบิลใบแจ้งหนี้ทั้งหมด |
+| `GET` / `POST` | `/billing/add/` | รับเลขมิเตอร์ คำนวณค่าน้ำ-ไฟ และบันทึกบิล |
+| `GET` / `POST` | `/contracts/add/` | บันทึกข้อมูลสัญญาและเจนเลขสัญญา (CT/BK) |
 
 ---
 
