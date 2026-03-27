@@ -36,10 +36,12 @@
 ## 🎨 2.3 ผลงานการออกแบบ (System Design)
 
 ### 1. System Architecture
-[แทรกรูปภาพ System Architecture (เช่น โครงสร้าง Client-Server / MVC)]
+<img width="752" height="666" alt="image" src="https://github.com/user-attachments/assets/2ac965ea-5d63-4760-91ea-ee74699dacf3" />
+
 
 ### 2. Use Case Diagram
-[แทรกรูปภาพ Use Case Diagram]
+<img width="980" height="725" alt="image" src="https://github.com/user-attachments/assets/cab2a3db-a8d7-48b4-80f6-06fc149cf299" />
+
 - **Actors:** Admin (ผู้ดูแลระบบ), Tenant (ผู้เช่า)
 
 ### 3. Activity Diagram
