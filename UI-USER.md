@@ -51,3 +51,11 @@
 หน้าสรุปทุกอย่าง
 
 <img width="847" height="758" alt="image" src="https://github.com/user-attachments/assets/a3241fb9-6c90-49ee-aa45-49b044568e5b" />
+
+หน้าก่อนLogout
+
+<img width="955" height="762" alt="image" src="https://github.com/user-attachments/assets/619ac7be-536c-4560-a2e2-39b1ac820e22" />
+
+logout สำเร็จ
+
+<img width="877" height="769" alt="image" src="https://github.com/user-attachments/assets/b6bda5f7-88ef-49ae-afb5-c0f94f1b0408" />
