@@ -58,6 +58,8 @@
 ### 6. UX/UI Design
 - **Figma Design:https://www.figma.com/design/UvzengjynBO3aH7dTtoyo8/%E0%B8%AB%E0%B8%AD%E0%B8%9E%E0%B8%B1%E0%B8%81-%E0%B8%95%E0%B9%89%E0%B8%A1%E0%B8%95%E0%B8%B8%E0%B9%8B%E0%B8%99?node-id=0-1&t=ZWFoPFXkpDJBXWUY-1
 <img width="691" height="797" alt="image" src="https://github.com/user-attachments/assets/6d28e810-d28d-4781-abac-b17e1aa681ea" />
+<img width="761" height="766" alt="image" src="https://github.com/user-attachments/assets/d8eb8f87-9417-4682-9883-ae3a60fd75b2" />
+<img width="383" height="768" alt="image" src="https://github.com/user-attachments/assets/516f5f62-e43f-4a3f-880f-24735431b418" />
 
 
 ### 7. API End-Points
