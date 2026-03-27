@@ -7,6 +7,7 @@ from django.shortcuts import redirect
 from django.db.models import Q
 from .models import Contract
 import time # นำเข้า time เพื่อเอาไว้สุ่มเลขสัญญาชั่วคราว
+from django.shortcuts import get_object_or_404
 
 # management/views.py
 
@@ -248,7 +249,68 @@ def add_bill(request):
     
     return render(request, 'add_bill.html', {'active_tenants': active_tenants})
 def maintenance(request):
-    return render(request, 'maintenance.html')
+    # รับค่าจาก Dropdown กรองสถานะ
+    status_filter = request.GET.get('status', '')
+    
+    # ดึงข้อมูลทั้งหมดเรียงจากใหม่ไปเก่า
+    requests = MaintenanceRequest.objects.all().order_by('-created_at')
+    
+    if status_filter:
+        requests = requests.filter(status=status_filter)
+        
+    # คำนวณยอดสรุปในการ์ดด้านบน
+    pending_count = MaintenanceRequest.objects.filter(status='pending').count()
+    in_progress_count = MaintenanceRequest.objects.filter(status='in_progress').count()
+    waiting_count = MaintenanceRequest.objects.filter(status='waiting').count()
+    
+    today = datetime.now()
+    completed_count = MaintenanceRequest.objects.filter(
+        status='completed', 
+        created_at__year=today.year, 
+        created_at__month=today.month
+    ).count()
+
+    context = {
+        'requests': requests,
+        'status_filter': status_filter,
+        'pending_count': pending_count,
+        'in_progress_count': in_progress_count,
+        'waiting_count': waiting_count,
+        'completed_count': completed_count,
+    }
+    return render(request, 'maintenance.html', context)
+
+def add_maintenance(request):
+    if request.method == 'POST':
+        room_id = request.POST.get('room')
+        room = Room.objects.get(id=room_id)
+        
+        # จัดการวันที่ ถ้าไม่ได้เลือกมาให้เป็น None
+        appt_date = request.POST.get('appointment_date')
+        if not appt_date:
+            appt_date = None
+            
+        MaintenanceRequest.objects.create(
+            room=room,
+            title=request.POST.get('title'),
+            description=request.POST.get('description', ''),
+            urgency=request.POST.get('urgency'),
+            reporter=request.POST.get('reporter'),
+            appointment_date=appt_date,
+            status='pending'
+        )
+        return redirect('maintenance')
+        
+    # ดึงรายชื่อห้องทั้งหมดมาแสดงให้เลือก
+    rooms = Room.objects.all()
+    return render(request, 'add_maintenance.html', {'rooms': rooms})
+
+# ฟังก์ชันนี้เอาไว้ให้กดปุ่ม "รับเรื่อง" แล้วเปลี่ยนสถานะทันที
+def accept_maintenance(request, pk):
+    req = get_object_or_404(MaintenanceRequest, pk=pk)
+    req.status = 'in_progress'
+    req.save()
+    return redirect('maintenance')
 def settings_view(request):
     return render(request, 'settings.html')
 def login_view(request):
@@ -313,8 +375,7 @@ def add_room(request):
 
     # ถ้าไม่ใช่ POST (คือผู้ใช้เพิ่งกดเข้ามาหน้านี้ครั้งแรก) ก็ให้แสดงหน้าฟอร์มปกติ
     return render(request, 'add_room.html')
-def add_maintenance(request):
-    return render(request, 'add_maintenance.html')
+
 def add_checkin(request):
     return render(request, 'add_checkin.html')
 
@@ -417,3 +478,23 @@ def edit_contract(request, contract_id):
         return redirect('contracts') # แก้เสร็จแล้วกลับไปหน้าหลัก
         
     return render(request, 'edit_contract.html', {'contract': contract})
+
+# เพิ่มฟังก์ชันนี้ต่อท้ายสุดใน views.py
+def edit_maintenance(request, pk):
+    # ดึงข้อมูลรายการแจ้งซ่อมที่ต้องการแก้ไข
+    req = get_object_or_404(MaintenanceRequest, pk=pk)
+    
+    if request.method == 'POST':
+        # รับค่าที่แก้ไขจากฟอร์ม
+        req.title = request.POST.get('title')
+        req.description = request.POST.get('description', '')
+        req.urgency = request.POST.get('urgency')
+        req.status = request.POST.get('status') # สิ่งสำคัญที่สุดคือการอัปเดตสถานะ
+        
+        appt_date = request.POST.get('appointment_date')
+        req.appointment_date = appt_date if appt_date else None
+        
+        req.save()
+        return redirect('maintenance') # เซฟเสร็จกลับไปหน้าตาราง
+        
+    return render(request, 'edit_maintenance.html', {'req': req})

@@ -58,18 +58,28 @@ class MaintenanceRequest(models.Model):
     STATUS_CHOICES = [
         ('pending', 'รอดำเนินการ'),
         ('in_progress', 'กำลังซ่อม'),
+        ('waiting', 'รออะไหล่'),
         ('completed', 'เสร็จสิ้น'),
     ]
     
+    URGENCY_CHOICES = [
+        ('normal', 'ปกติ (ดำเนินการภายใน 1-3 วัน)'),
+        ('urgent', 'ด่วน (ดำเนินการภายใน 24 ชั่วโมง)'),
+        ('very_urgent', 'ด่วนมาก (ฉุกเฉิน)'),
+    ]
+    
     room = models.ForeignKey(Room, on_delete=models.CASCADE, verbose_name="ห้องพัก")
-    title = models.CharField(max_length=200, verbose_name="หัวข้อแจ้งซ่อม") # เช่น แอร์ไม่เย็น, น้ำรั่ว
+    title = models.CharField(max_length=200, verbose_name="หัวข้อปัญหา")
     description = models.TextField(blank=True, verbose_name="รายละเอียดเพิ่มเติม")
+    urgency = models.CharField(max_length=20, choices=URGENCY_CHOICES, default='normal', verbose_name="ความเร่งด่วน")
+    reporter = models.CharField(max_length=100, verbose_name="ผู้แจ้ง")
+    appointment_date = models.DateField(null=True, blank=True, verbose_name="วันที่สะดวกให้เข้าซ่อม")
+    
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending', verbose_name="สถานะ")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="วันที่แจ้ง")
 
     def __str__(self):
         return f"แจ้งซ่อม {self.room.room_number}: {self.title}"
-# models.py (เพิ่มต่อท้าย)
 
 class Contract(models.Model):
     CONTRACT_TYPES = (
