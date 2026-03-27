@@ -8,6 +8,7 @@ from django.db.models import Q
 from .models import Contract
 import time # นำเข้า time เพื่อเอาไว้สุ่มเลขสัญญาชั่วคราว
 from django.shortcuts import get_object_or_404
+from .models import CheckInOutLog
 
 # management/views.py
 
@@ -146,7 +147,54 @@ def contracts(request):
     return render(request, 'contracts.html', {'contracts': all_contracts})
 
 def check_in_out(request):
-    return render(request, 'check_in_out.html')
+    # ดึงประวัติทั้งหมดมาแสดงในหน้าแรก
+    logs = CheckInOutLog.objects.all().order_by('-transaction_date')
+    return render(request, 'check_in_out.html', {'logs': logs})
+
+def add_checkin(request):
+    if request.method == 'POST':
+        room = Room.objects.get(id=request.POST.get('room'))
+        
+        CheckInOutLog.objects.create(
+            transaction_type='in',
+            room=room,
+            # รับชื่อผู้เช่าจากฟอร์มที่กรอกเข้ามา
+            tenant_name=request.POST.get('tenant_name'), 
+            transaction_date=request.POST.get('transaction_date'),
+            water_meter=request.POST.get('water_meter', 0),
+            electric_meter=request.POST.get('electric_meter', 0),
+            key_received=request.POST.get('key_received') == 'on',
+            notes=request.POST.get('notes', '')
+        )
+        room.status = 'occupied' 
+        room.save()
+        return redirect('check_in_out')
+
+    rooms = Room.objects.exclude(status='occupied')
+    return render(request, 'add_checkin.html', {'rooms': rooms})
+
+def add_checkout(request):
+    if request.method == 'POST':
+        room = Room.objects.get(id=request.POST.get('room'))
+        
+        CheckInOutLog.objects.create(
+            transaction_type='out',
+            room=room,
+            # รับชื่อผู้เช่าจากฟอร์มที่กรอกเข้ามา
+            tenant_name=request.POST.get('tenant_name'),
+            transaction_date=request.POST.get('transaction_date'),
+            water_meter=request.POST.get('water_meter', 0),
+            electric_meter=request.POST.get('electric_meter', 0),
+            damage_fee=request.POST.get('damage_fee', 0),
+            refund_deposit=request.POST.get('refund_deposit', 0),
+            notes=request.POST.get('notes', '')
+        )
+        room.status = 'available'
+        room.save()
+        return redirect('check_in_out')
+
+    rooms = Room.objects.filter(status='occupied')
+    return render(request, 'add_checkout.html', {'rooms': rooms})
 
 def tenants(request):
     search_query = request.GET.get('search', '')
@@ -345,8 +393,7 @@ def add_tenant(request):
     # ส่งรายชื่อห้องที่ "ว่าง" ไปให้เลือกใน Dropdown
     available_rooms = Room.objects.exclude(status__icontains='มีผู้เช่า').exclude(status__icontains='occupied')
     return render(request, 'add_tenant.html', {'rooms': available_rooms})
-def add_room(request):
-    return render(request, 'add_room.html')
+
 def add_room(request):
     if request.method == 'POST':
         # รับค่าที่ส่งมาจาก Form โดยอ้างอิงจาก 'name' ที่เราเพิ่งใส่ไปใน HTML
@@ -375,12 +422,6 @@ def add_room(request):
 
     # ถ้าไม่ใช่ POST (คือผู้ใช้เพิ่งกดเข้ามาหน้านี้ครั้งแรก) ก็ให้แสดงหน้าฟอร์มปกติ
     return render(request, 'add_room.html')
-
-def add_checkin(request):
-    return render(request, 'add_checkin.html')
-
-def add_checkout(request):
-    return render(request, 'add_checkout.html')
 
 def add_contract(request):
     # ดึงเฉพาะห้องที่สถานะ 'ว่าง' มาแสดงใน Dropdown

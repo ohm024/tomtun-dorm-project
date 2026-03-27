@@ -45,3 +45,13 @@ class BillingAdmin(admin.ModelAdmin):
     
     # เรียงลำดับจากวันที่สร้างล่าสุดไปเก่าสุด
     ordering = ('-created_at',)
+
+# ในไฟล์ admin.py (อย่าลืม import CheckInOutLog ด้านบนสุดด้วยนะครับ)
+from .models import Room, Tenant, Contract, MaintenanceRequest, Billing, CheckInOutLog
+
+@admin.register(CheckInOutLog)
+class CheckInOutLogAdmin(admin.ModelAdmin):
+    list_display = ('room', 'tenant_name', 'transaction_type', 'transaction_date', 'status')
+    list_filter = ('transaction_type', 'status')
+    search_fields = ('room__room_number', 'tenant_name')
+    ordering = ('-transaction_date',)
