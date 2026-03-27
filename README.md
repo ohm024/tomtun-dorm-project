@@ -45,17 +45,20 @@
 - **Actors:** Admin (ผู้ดูแลระบบ), Tenant (ผู้เช่า)
 
 ### 3. Activity Diagram
-[แทรกรูปภาพ Activity Diagram เช่น โฟลว์การออกบิล หรือ โฟลว์การทำสัญญาเช่า]
+<img width="276" height="744" alt="image" src="https://github.com/user-attachments/assets/edfc929e-0143-4059-ba5d-430b39253141" />
+<img width="648" height="665" alt="image" src="https://github.com/user-attachments/assets/4b6a918d-279b-4ce7-811c-28cbcbfc9a3f" />
+<img width="411" height="513" alt="image" src="https://github.com/user-attachments/assets/4dbc7424-63c3-4493-a7db-571ea111997b" />
+
 
 ### 4. ER Diagram
-[แทรกรูปภาพ ER Diagram ที่เพื่อนวาดจาก Data Dictionary]
+<img width="1313" height="1064" alt="image" src="https://github.com/user-attachments/assets/cfa04892-fb22-43e4-bbff-ef95352a24f7" />
 
-### 5. User Flow
-[แทรกรูปภาพ หรือ ลิงก์ไปยัง User Flow]
+
 
 ### 6. UX/UI Design
-- **Figma Design:** [ใส่ลิงก์ Figma]
-- [แทรกภาพ Screenshot หน้าจอหลักๆ ของระบบ 2-3 ภาพ]
+- **Figma Design:https://www.figma.com/design/UvzengjynBO3aH7dTtoyo8/%E0%B8%AB%E0%B8%AD%E0%B8%9E%E0%B8%B1%E0%B8%81-%E0%B8%95%E0%B9%89%E0%B8%A1%E0%B8%95%E0%B8%B8%E0%B9%8B%E0%B8%99?node-id=0-1&t=ZWFoPFXkpDJBXWUY-1
+<img width="691" height="797" alt="image" src="https://github.com/user-attachments/assets/6d28e810-d28d-4781-abac-b17e1aa681ea" />
+
 
 ### 7. API End-Points
 | Method | Endpoint | Description |
